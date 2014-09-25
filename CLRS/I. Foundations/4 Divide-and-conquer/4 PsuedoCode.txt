@@ -1,0 +1,150 @@
+4 Divide-and-conquer
+
+	4.1 The maximum-subarray problem
+	4.2 Strassen's algorithms for matrix multiplication
+	4.3 The substitution method for solving recurrences
+	4.4 The recursion-tree method for solving recurrences
+	4.5 The master method for solving recurrences
+	4.6 Proof of the master theorem (*)
+	Problems
+
+Problems:
+	
+	4-1 Recurrence examples
+	4-2 Parameter-passing costs
+	4-3 More recurrence examples
+	4-4 Fibonacci numbers
+	4-5 Chip testing
+	4-6 Monge arrays
+
+Recurrences:
+
+	(4.1) 
+
+	T(n) = 
+		{ THETA(1) 		if n = 1
+		{ 2T(n/2) + THETA(n)	if n > 1
+
+        (4.2)		       
+
+		T(n) = aT(n/b) + f(n)
+		
+		 - where a >= 1, b >1, f(n) := a given function
+
+	(4.3)		
+
+		T(n) =
+			{ THETA(1)					if n = 1
+			{ T(Ceiling(n/2)) + T(Floor(n/2)) + THETA(n)	if n > 1
+
+	(4.4)			
+
+		T(n) = 2T(n/2) + THETA(n)
+
+
+Maximum-Subarray divide-and-conquer analysis
+
+	(4.5)
+
+		T(1) = THETA(1)
+
+	(4.6)
+
+		T(n) = THETA(1) + 2T(n/2) + THETA(n) + THETA(1)
+		     = 2T(n/2) + THETA(n)
+
+        (4.7)
+
+		T(n) =
+			{ THETA(1)		if n = 1	
+			{ 2T(n/2) + THETA(n) 	if n > 1
+
+Strassen's algorithm for matrix multiplication
+	
+	(4.8)
+		c_i,j = sum(k = 1, n) { a_i,k * b_k,j }
+	
+
+4.1	The maximum-subarray problem
+
+	(Not in book: self-defined.)
+	( # pairs: n choose 2 => THETA(n^2) => best-case: OMEGA(n^2) )
+	BRUTE-FORCE(A)
+	1. maxpair = (-1,-1)
+	2. maxsum = -1
+	3. for each pair in A
+	4. 	if pair.first.value + pair.second.value > maxsum	  
+	4.		maxsum = pair.first.value + pair.second.value
+	5.		maxpair(pair.first.index, pair.second.index)					
+	6. return maxpair
+
+
+	( O( n * log(n) ) )
+	FIND-MAXIMUM-SUBARRAY(A,low,high)
+	1. if high == low
+	2. 	return (low, high, A[low])
+	3. else mid = floor((low+high)/2)
+	4. 	(left-low, left-high, left-sum) = FIND-MAXIMUM-SUBARRAY(A, low, mid)
+	5.	(right-low, right-high, right-sum) = FIND-MAXIMUM-SUBARRAY(A, mid+1, high)
+	6.	(cross-low, cross-high, cross-sum) = FIND-MAX-CROSSING-SUBARRAY(A,low,mid,high)
+	7.	if left-sum >= right-sum AND left-sum >= cross-sum
+	8.		return (left-low, left-high, left-sum)
+	9.	elseif right-sum >= left-sum AND right-sum >= cross-sum
+	10.		return (right-low, right-high, right-sum)
+	11.	else return (cross-low, cross-high, cross-sum)	
+	
+	( O( log(n) ) )
+	FIND-MAX-CROSSING-SUBARRAY(A,low,mid,high)
+	1.	left-sum = negative infinity
+	2.	sum = 0
+	3.	for i = mid downto low
+	4.		sum = sum + A[i]
+	5.		if sum > left-sum
+	6.			left-sum
+	7.			max-left = i
+	8.	right-sum = negative infinity
+	9.	sum = 0
+	10.	for j = mid + 1 to high
+	11.		sum = sum + A[j]
+	12.		if sum > right-sum
+	13.			right-sum = sum
+	14.			max-right = j
+	15.	return (max-left, max-right, left-sum + right-sum)
+
+
+	
+
+4.2 Strassen’s algorithm for matrix multiplication
+
+
+	( O(n^3) )
+	SQUARE-MATRIX-MULTIPLY(A,B)
+	1. n = A.rows
+	2. let C be a new n x n matrix
+	3. for i = 1 to n
+	4. 	for j = 1 to n
+	5.		c_(i,j) = 0
+	6.		for k = 1 to n
+	7.			c_(i,j) = c_(i,j) + a_(i,k) * b_(k,j)
+	8. return C
+
+
+
+	
+	( O(n^3) )
+	( with Strassen's method: O( n ^ lg(7) )
+	SQUARE-MATRIX-MULTIPLY-RECURSIVE(A,B)
+	1. n = A.rows
+	2. let C be a new n x n matrix
+	3. if n == 1
+	4.	c_(1,1) = a_(1,1) * b_(1,1)
+	5. else partition A, B, and C
+	6.	C_(1,1) = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(1,1) + B_(1,1)) 
+			+ SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(1,2) + B_(2,1))
+	7.	C_(1,2) = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(1,1) + B_(1,2)) 
+			+ SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(1,2) + B_(2,2))
+	8.	C_(2,1) = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(2,1) 
+			+ B_(1,1)) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(2,2) + B_(2,1))
+	9. 	C_(2,2) = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(2,1) 
+			+ B_(1,2)) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A_(2,2) + B_(2,2))
+	10. return C

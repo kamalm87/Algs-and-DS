@@ -1,0 +1,15 @@
+3 Growth of Functions
+
+	3.1 Asymptotic notation
+	3.2 Standard notatiosn and common functions
+	Problems
+
+Problems:
+
+	3-1 Asymptotic behavior of polynomials
+	3-2 Relative asymptotic growths
+	3-3 Ordering by asymptotic growth rates
+	3-4 Asymptotic notation properties
+	3-5 Variations on O and OMEGA
+	3-6 Iterated functions
+
