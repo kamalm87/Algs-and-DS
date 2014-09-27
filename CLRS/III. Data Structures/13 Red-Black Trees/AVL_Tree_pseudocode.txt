@@ -1,0 +1,276 @@
+AVL Node:
+
+- Attributes:
+	* Data: Generic represnetative data
+	* Height: Height of Node
+	* Left: Left child pointer
+ 	* Right Right child pointer
+	* Parent: Parent pointer
+
+- Methods:
+
+	(A := the invoking AVL Node)
+	(NIL := an empty dummy pointer) 
+
+	-- O(h), where h = O(log(N)) 
+	UpdateHeight():
+	1.   if A.Left != NIL AND A.Right != NIL
+	2.	  if A.Left.Height > A.Right.Height
+	3.		  A.Height = A.Left.Height + 1
+	4. 	  else
+	5. 		  A.Height = A.Right.Height + 1
+	6.   else if A.Left != NIL	
+	7. 	A.Height = A.Left.Height + 1
+	8.   else if A.Right != Nil	
+	9.	 A.Height = A.Right.Height + 1 	
+	10.  else
+	11.	A.Height = 0; 	
+	12.  return A.Height
+
+	-- O(h), where h = O(log(N)) 
+	Balance():
+	1. if A.Left != NIL AND A.Right != NIL
+	2.	return ( A.Left.Height - A.Right.Height)
+	3. else if A.Left != NIL
+	4. 	return (A.Left-Height + 1)
+	5. else if A.Right != NIL
+	6. 	return A.Right.Height + 1
+	7. else
+	8.	return 0
+	
+	(A := the invoking AVL Node)
+	(N := AVLNode)
+	-- O(h), where h = O(log(N)) (based on call to UpdateHeight, rest is
+O(1)
+	SetLeft(N):
+	1. if N != NIL
+	2.	N.Parent = A 	
+	3. A.Left = N	
+	4. UpdateHeight()
+	5. return A.Left
+
+	(A := the invoking AVL Node)
+	(N := AVLNode)
+	-- O(h), where h = O(log(N)) (based on call to UpdateHeight, rest is
+O(1)
+	SetRight(N):
+	1. if N != NIL
+	2. 	N.Parent = A
+	3. A.Right = N 	
+	4. UpdateHeight()
+	5. return A.Right
+
+	RemoveParent()
+	1. A.Parent = NIL
+	
+	
+AVL Tree:
+
+- Attributes:
+	* Root: AVLNode representing the Root of the Tree
+	* NIL: AVLNode repesenting a dummy empty pointer
+	* Height: number representing the height of the tree (height of Root)
+	* Count: number representing the number of elments in the tree
+
+- Methods:
+// Internal auxiliary functions
+
+	SetRoot(N)
+	1. A.Root = N
+	2. if Root != NIL	
+	3.	Root.RemoveParent 	
+
+
+	(N := AVLNode)
+	-- O(h), where h = O(log(N)) (based on call to UpdateHeight within
+SetLeft/SetRight)
+	RotateLeft(N)	
+	1.  p = N.Parent
+	2.  isLeft
+	3.  if p != NIL
+	4.	 if P.Left == n
+	5.		 isLeft = true
+	6.	 else
+	7.		 isLeft = false
+	8.  t = N.Right		
+	9.  N.SetRight(t.Left)
+	10. t.SetLeft(n)
+	11. if p != NIL
+	12. 	if isLeft == true 
+	13. 		p.SetLeft(t)
+	14.	else
+	15. 		p.SetRight(t)
+	16. else
+	17.	SetRoot(t)
+
+
+	(N := AVLNode)
+	-- O(h), where h = O(log(N)) (based on call to UpdateHeight within
+SetLeft/SetRight)
+	RotateRight(N)	
+	1.  p = N.Parent
+	2.  isLeft
+	3.  if p != NIL
+	4.	 if P.Left == n
+	5.		 isLeft = true
+	6.	 else
+	7.		 isLeft = false
+	8.  t = N.Left		
+	9.  N.SetLeft(t.Right)
+	10. t.SetRight(n)
+	11. if p != NIL
+	12. 	if isLeft == true 
+	13. 		p.SetLeft(t)
+	14.	else
+	15. 		p.SetRight(t)
+	16. else
+	17.	SetRoot(t)			
+	
+	// O(h), h = LOG(N)
+	BalanceAt(N):
+	1. bal = N.Balance()
+	2. if bal > 1
+	3. 	if N.Left.Balance() < 0
+	4.		RotateLeft(N.Right)			
+	5.	RotateRight(N)
+	6. if ( bal < -1	
+	7.	if N.Right.Balance() > 0
+	8.		RotateRight(N.Right)
+	9.	RotateLeft(N)
+
+
+	(T:= invoking AVL Tree)
+	(D:= generic contextually relevant data type value)
+	FindNode(D):
+	1. t = T.Root
+	2. while t != T.NIL	
+	3.	if d == t.Data
+	4.		return t
+	5.	else if d < t.Data
+	6.		t = t.Left
+	7.	else
+	8.		t = t.Right
+	9. return T.NIL
+
+// Public primary functions
+
+	(T:= invoking AVL Tree)
+	(D:= generic contextually relevant data type value)
+	( AVLNode(D):= create a new AVLNode from the D)
+	Insert(D):
+	1.  inserted   
+	2.  if T.Root == NIL // Tree is empty	
+	3.  	T.Root = AVLNode(d)
+	4.	T.Count = T.Count + 1	
+	5.	return true
+	6.   else	
+	7.	t = T.Root
+	8. 	while true
+	9.		if t.Data > d
+	10.			if t.Left == NIL
+	11.				inserted = t.SetLeft(AVLNode(D))
+	12.				break while loop		
+	13.			else
+	14.				t = t.Left
+	15.		else if t.Data < d 
+	16.			if t.Right == NIL		
+	17.				inserted = t.SetRight(AVLNode(D))
+	18.				break while loop
+	19.			else	
+	20.				t = t.Right
+	21.		else // tree already contains the element (assumes no
+duplicates)	
+	22.			return false
+	23. t = inserted				
+	24. while t != NIL 	
+	25.	t.UpdateHeight() 	
+	26.	T.BalanceAt(t)
+	27.	t = t.Parent
+	28.	if t == T.Root
+	29.		T.Height = Root.Height
+	30. T.Count = T.Count + 1 // update T's count	
+	31. return true	// successful insertion	and update
+
+	
+	(T:= invoking AVL Tree)
+	(D:= generic contextually relevant data type value)
+	( AVLNode(D):= create a new AVLNode from the D)
+	Delete(D)
+	1.  if T.Root != T.NIL 
+	2.	return false
+	3.  replacement, replacement_parent, temp_node	// AVLNodes
+	4.  to_be_removed = T.FindNode(D)	
+	5.  if to_be_removed == NIL
+	6.	return false
+	7.  p = to_be_removed.Parent	
+	8.  isLeft
+	9.  if p != NIL 
+	10.	if p.Left == to_be_removed
+	11.		isLeft = true
+	12.	else
+	13.		isLeft = false
+	14. bal = to_be_removed.Balance()	
+	15. if to_be_removed.Left == T.NIL AND to_be_removed.Right == T.NIL
+	16.	if p != T.NIL
+	17.		if isLeft == true		
+	18.			p.SetLeft(T.NIL)
+	19.		else
+	20.			p.SetRight(T.NIL)
+	21.		// clean-up to_be_removed 
+	22.		p.UpdateHeight()
+	23.		T.BalanceAt(p)
+	24.	else
+	25.		T.SetRoot(T.NIL)
+	26.		// clean-up to_be_removed
+	27. else if to_be_removed.Right == NIL	
+	28.	if p != T.NIL
+	29.		if isLeft == true			
+	30.			p.SetLeft(to_be_removed.Left)
+	31.		else
+	32.			p.SetRight(to_be_removed.Left)
+	33.			// clean-up to_be_removed
+	34.		p.UpdateHeight()
+	35.		T.BalanceAt(p)
+	36. 	else
+	37.		T.SetRoot(to_be_removed.Left)
+	38.		// clean-up to_be_removed
+	39. else if to_be_removed.Left == T.NIL	
+	40.	if p != T.NIL
+	41.		if isLeft == true
+	42.			p.SetLeft(to_be_removed.Right)
+	43.		else	
+	44.			p.SetRight(to_be_removed.Left)
+	45.		// clean-up to_be_removed	
+	46.		p.UpdateHeight()
+	47.		T.BalanceAt(p)
+	48.	else
+	49.		T.SetRoot(to_be_removed.Right)
+	50.		// clean-up to_be_removed
+	51. else	
+	52.	if bal > 0
+	53.		if to_be_removed.Left.Right == NIL
+	54.			replacement = to_be_removed.Left
+	55.			replacement.SetRight(to_be_removed.Right)
+	56.			temp_node = replacement	
+	57.		else
+	58.			replacement = to_be_removed.Right.Left		
+	59.			while replacement.Left != T.NIL
+	60.				replacement = replacement.Left		
+	61.			replacement_parent = replacement.Parent	
+	62.			replacementParent.SetLeft(replacement.Right)
+	63.			replacement.SetLeft(to_be_removed.Left)
+	64.			replacement.SetRight(to_be_removed.Right)
+	65. if p != T.NIL			
+	66.	if isLeft == true
+	67.		p.SetLeft(replacement)
+	68.	else	
+	69.		p.SetRight(replacement)
+	70.	// clean-up to_be_removed
+	71. else 
+	72.	T.SetRoot(replacement)
+	73.	// clean-up to_be_removed
+	74. T.Count = T.Count - 1 // update T's count
+	75. T.Height = T.Root.Height() // update T's Height
+	76. return false // indicate that the element was deleted!
+	
+	

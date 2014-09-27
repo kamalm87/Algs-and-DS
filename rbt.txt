@@ -1,0 +1,19 @@
+RBT - Properties:
+	1. Every node is either red of black.
+	2. The root is black.
+	3. Every leaf (NIL) is black.
+	4. If a node is red, then both its children are black.
+	5. For each node, all simple paths from the node to descendant leaves
+	contain the same number of black nodes. 
+
+
+RBT - Insertion Cases (z inserted into tree as a red node):
+	Case 1: z's uncle y is red
+	Case 2: z's uncle y is black and z is a right child
+	Case 3: z's uncle y is black and z is a left child
+
+RBT - Deletion Cases:
+	Case 1: x's sibling w is red
+	Case 2: x's sibling w is black, and both of w's children are black
+	Case 3: x's sibling w is black, w's left child is red, and w's right child is black
+	Case 4: x's sibling w is black, and w's right child is red
