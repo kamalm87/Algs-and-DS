@@ -1,0 +1,27 @@
+* Derives all of the properties of a Red-Black Tree
+* Added node attribute:
+	- Size: Number of internal nodes rooted at a given Node x, including x
+		- X.Size = X.Left.Size + X.Right.Size + 1
+	- Default Constructor: Initializes Size = 0
+		- Used by OrderStatisticTree's NIL
+	- Constructor with a Data parameter: Initializes Size = 1
+		- Logically equivalent to x.Size = x.Left.Size + x.Right.Size
+		  + 1 operation, where x is the constructed Node and x.Left
+and x.Right both point to NIL
+* Modifications to OrderStatisticsTree RedBlack Tree derived Methods:
+	- LeftRotate adds:
+		- y.Size = x.Size
+		- x.Size = X.Left.Size + X.Right.Size
+	- RightRotate adds:		
+		- y.Size = x.Size
+		- x.Size = X.Left.Size + X.Right.Size
+	- Insert adds:
+		- Updates parent pointers' size in the traversal to the
+		  correct node position:
+			- x.Size = x.Size + 1 (within the loop to the correct
+			  empty	pointer position)
+* New Methods for OrderStatisticTree:
+	- OS-Select(x,i): selects (and returns) the i-th order statistic from the tree rooted
+	  at Node x
+	- OS-RANK(T,x): returns the rank of the node x in the context of the
+	  OrderStatisticTree T

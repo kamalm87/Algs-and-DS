@@ -1,0 +1,104 @@
+14 Augmenting Data Structures
+	14.1 Dynamic Order Statistics
+	14.2 How to Augment a Data Structure
+	14.3 Interval Trees
+Problems
+	
+	14-1 Point of maximum overlap
+	14-2 Josephus permutation
+
+Pseudo-Code
+
+	(14.1)
+	// O(log(N))
+	OS-SELECT(x,i)
+	1. r = x.left.size + 1
+	2. if i == r	
+	3. 	return x
+	4. elseif i < r	
+	5.	return OS-SLEECT(x.left, i)
+	6. else return OS-SELECT(x.right, i - r)
+
+	(14.1)
+	// O(log(N))
+	OS-RANK(T,x)
+	1. r = x.left.size + 1
+	2. y = x
+	3. while y != T.root
+	4. 	if y == y.p.right
+	5.		r = r + y.p.left.size + 1
+	6.	y = y.p	
+	7. return r	
+
+	(Modification to RBT's LeftRotate(T,x))
+	O(1)
+	LEFT-ROTATE(T,x) (OrderStatisticTree)
+	1.  y = x.right			// set y
+	2.  x.right = y.left		// turn y's left subtree into x's
+	right subtree
+	3.  if y.left != T.nil
+	4. 	y.left.p = x
+	5.  y.p = x.p			// link x's parent to y
+	6.  if x.p == T.nil
+	7.	T.root = y
+	8.  elseif x == x.p.left
+	9. 	x.p.left = y
+	10. else x.p.right = y
+	11. y.left = x			// put x on y's left
+	12. x.p = y	
+	13. y.size = x.size
+	14. x.size = x.left.size + x.right.size + 1
+
+
+	(Modification to RBT's RightRotate(T,x))
+	O(1)
+	RIGHT-ROTATE(T,x) (OrderStatisticTree)
+	1.  y = x.left			// set y
+	2.  x.left = y.right		// turn y's right subtree into x's
+	left subtree
+	3.  if y.right != T.nil
+	4. 	y.right.p = x
+	5.  y.p = x.p			// link x's parent to y
+	6.  if x.p == T.nil
+	7.	T.root = y
+	8.  elseif x == x.p.right
+	9. 	x.p.right = y
+	10. else x.p.left = y
+	11. y.right = x			// put x on y's left
+	12. x.p = y
+	13. y.size = x.size
+	14. x.size = x.left.size + x.right.size + 1
+
+	(Modification to RBT's Insert(T,z)
+	(13.3)
+	O(LOG(N)
+	RB-INSERT(T,z)
+	1. y = T.nil
+	2. x = T.root
+	3. while x != nil
+	4. 	y = x
+	5.	x.size = x.size + 1
+	6. 	if z.key < x.key
+	7.		x = x.left
+	8. 	else x = x.right
+	9. z.p = y
+	10. if y == T.nil
+	11. 	T.root = z
+	12. elseif z.key < y.key
+	13. 	y.left = z
+	14. else y.right = z
+	15. z.left = T.nil
+	16. z.right = T.nil
+	17. z.color = RED
+	18. RB-INSERT-FIXUP(T,z)
+
+	(14.3)
+	INTERVAL-SEARCH(T,i)	
+	1. x = T.root	
+	2. while x != T.nil and i does not overlap x.int	
+	3. if x.left != T.nil and x.left.max >= i.low
+	4.		x = x.left
+	5.	else x = x.right
+	6. return x
+
+
