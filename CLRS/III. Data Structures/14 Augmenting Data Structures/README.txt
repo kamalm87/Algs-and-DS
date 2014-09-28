@@ -7,3 +7,4 @@ pseudocode_14.txt and pseudocode_13.txt)
   pseudocode, in addition to inferred pseudcode.
 * Figure.14.1.pdf: Screencap of Figure 14.1 from the textbook.   
 
+TODO: OrderStatisticTRee Deletion Size updates
