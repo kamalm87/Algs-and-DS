@@ -30,6 +30,7 @@ Pseudo-Code
 	6.	y = y.p	
 	7. return r	
 
+	[OrderStatisticTree]
 	(Modification to RBT's LeftRotate(T,x))
 	O(1)
 	LEFT-ROTATE(T,x) (OrderStatisticTree)
@@ -49,7 +50,7 @@ Pseudo-Code
 	13. y.size = x.size
 	14. x.size = x.left.size + x.right.size + 1
 
-
+	[OrderStatisticTree]
 	(Modification to RBT's RightRotate(T,x))
 	O(1)
 	RIGHT-ROTATE(T,x) (OrderStatisticTree)
@@ -69,6 +70,7 @@ Pseudo-Code
 	13. y.size = x.size
 	14. x.size = x.left.size + x.right.size + 1
 
+	[OrderStatisticTree]	
 	(Modification to RBT's Insert(T,z)
 	(13.3)
 	O(LOG(N)
@@ -102,3 +104,75 @@ Pseudo-Code
 	6. return x
 
 
+	[IntervalTree]
+	[OrderStatisticTree]	
+	(Modification to RBT's Insert(T,z)
+	(13.3)
+	O(LOG(N)
+	RB-INSERT(T,z)
+	1. y = T.nil
+	2. x = T.root
+	3. while x != nil
+	4. 	y = x
+	5. 	if z.key < x.key
+	6.		x = x.left
+	7. 	else x = x.right
+	8. z.p = y
+	9. if y == T.nil
+	10. 	T.root = z
+	11. elseif z.key < y.key
+	12. 	y.left = z
+	13. else y.right = z
+	14. z.left = T.nil
+	15. z.right = T.nil
+	16. z.color = RED
+	17. RB-INSERT-FIXUP(T,z)
+	18. while z != NIL	// this alone loop alone: O(log(N))
+	19.	z = z.Parent
+	20.	z.Max = Max(z.Max, Z.Left.Max, Z.Right.Max
+	21.	// Note: above assumes there's a check for NIL children
+
+
+	[IntervalTree]
+	(Modification to RBT's LeftRotate(T,x))
+	O(1)
+	LEFT-ROTATE(T,x) (OrderStatisticTree)
+	1.  y = x.right			// set y
+	2.  x.right = y.left		// turn y's left subtree into x's
+	right subtree
+	3.  if y.left != T.nil
+	4. 	y.left.p = x
+	5.  y.p = x.p			// link x's parent to y
+	6.  if x.p == T.nil
+	7.	T.root = y
+	8.  elseif x == x.p.left
+	9. 	x.p.left = y
+	10. else x.p.right = y
+	11. y.left = x			// put x on y's left
+	12. x.p = y	
+	13. y.Max = x.Max
+	14. x.Max = Max(x.Max, x.Left.Max, x.Right.Max)
+
+
+	[IntervalTree]
+	(Modification to RBT's RightRotate(T,x))
+	O(1)
+	RIGHT-ROTATE(T,x) (OrderStatisticTree)
+	1.  y = x.left			// set y
+	2.  x.left = y.right		// turn y's right subtree into x's
+	left subtree
+	3.  if y.right != T.nil
+	4. 	y.right.p = x
+	5.  y.p = x.p			// link x's parent to y
+	6.  if x.p == T.nil
+	7.	T.root = y
+	8.  elseif x == x.p.right
+	9. 	x.p.right = y
+	10. else x.p.left = y
+	11. y.right = x			// put x on y's left
+	12. x.p = y
+	13. y.Max = x.Max
+	14. x.Max = Max(x.Max, x.Left.Max, x.Right.Max)
+
+
+	

@@ -1,0 +1,25 @@
+Derives all properties from Red-Black Trees
+
+Node data structure augmentation:
+	* Interval := Interval (Low, High) (Open/Closed)
+	* Data := member becomes the Interval's Low endpoint
+	* Max := Maximum endpoint stored in the Node's subtree
+		- Max(x.High, x.Left.High, X.Right.High)
+		- (where x is the invoking Node)
+Added operations:
+
+	* INTERVAL-INSERT(T,x): inserts a specified Interval Node
+	
+	* INTERVAL-DELETE(T,x): deletes a specified Interval Node
+
+	* INTERVAL-SEARCH(T,i): searches for an overlapping Interval Node
+	
+
+Tree data structure augmention:
+
+	* Insert:
+		- Recurses from insertion point updating each parent's max
+	* LeftRotate
+		- Swaps the maximums between x and y, the rotated nodes
+	* RightRotate
+		- Swaps the maximums between x and y, the rotated nodes			
