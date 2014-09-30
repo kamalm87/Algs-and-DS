@@ -1,6 +1,4 @@
 FILES:
-* InterrvalTree_Properties: Defines the properties of a Red-Black Tree-derived
-  Interval Tree
 * IntervalTree.h: IntervalTree (Red-Black Tree derived augmentation)
 * OrderStatisticTree.h: OrderStatisticTree (RedBlack Tree derived augmentation
  )implementation based pseudocode from this chapter. (Reference
