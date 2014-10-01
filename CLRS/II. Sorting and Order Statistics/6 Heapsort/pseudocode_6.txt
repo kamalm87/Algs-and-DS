@@ -1,0 +1,105 @@
+6 Heapsort
+- 6.1 Heaps
+- 6.2 Maintaining the heap property
+- 6.3 Building a heap
+- 6.4 The heapsort algorithm
+- 6.5 Priority queues
+- Problems:
+	- 6-1 Building a heap using insertion
+	- 6-2 Analysis of d-ary heaps
+	- 6-3 Young tableaus
+
+
+(6.1) 
+O(1)
+PARENT(i)
+1. return floor (i/2)
+
+(6.1) 
+O(1)
+LEFT(i)
+1. return 2i
+
+(6.1) 
+O(1)
+RIGHT(i)
+1. return 2i + 1
+
+
+(6.2)
+(O(h)), where h = LOG(N)
+MAX-HEAPIFY(A,i)
+1. l = LEFT(i)
+2. r = RIGHT(i)
+3. if l <= A.heap-size and A[l] > A[i]
+4.	largest = l
+5. else largest = i
+6. if r <= A.heap-size and A[r] > A[largest]
+7.	 largest = r
+8. if largest != i
+9. 	exchange A[i] with A[largest]
+10.	MAX-HEAPIFY(A,largest)
+
+(O(h)), where h = LOG(N)
+MIN-HEAPIFY(A,i)
+1. l = LEFT(i)
+2. r = RIGHT(i)
+3.
+4. if l < A.heap-size and A[l] < A[i]
+5. 	smallest = l
+6. if r < A.heap-size and A[r] < A[smallest]
+7.	smallest = r
+8. if smallest != i
+9.	exchange A[i] with A[smallest]
+10. 	MIN-HEAPIFY(A, smallest)
+
+
+(6.3)
+O(N)
+BUILD-MAX-HEAP(A)
+1. A.heap-size = A.length
+2. for i = floor(A.length/2) downto 1
+3.	MAX-HEAPIFY(A,i)
+
+(6.4)
+O(N*h), where h = LOG(N) => O(N*LOG(N))
+HEAPSORT(A)
+1. BUILD-MAX-HEAP(A)
+2. for i = A.length downto 2
+3.	exchange A[1] with a[i]
+4.	A.heap-size = A.heap-size - 1
+5.	MAX-HEAPIFY(A,1)
+
+(6.5)
+O(1)
+HEAP-MAXIMUM(A)
+1. return A[1]
+
+(6.5)
+O(LOG(N))
+HEAP-EXTRACT-MAX(A)
+1. if A.heap-size < 1
+2.	error "heap underflow"
+3. max = A[1]
+4. A[1] = A[A.heap-size]
+5. A.heap-size = A.heap-size - 1
+6. MAX-HEAPIFY(A,1)
+7. return max
+
+(6.5)
+O(LOG(N))
+HEAP-INCREASE-KEY(A,i,key)
+1. if key < A[i] 
+2.	error "new key is smaller than current key"
+3. A[i] = key
+4. while i > 1 and A[PARENT(I)]
+5.	exchange(A[i], A[PARENT(i)]
+6.	i = PARENT(i)
+
+(6.5)
+O(LOG(N))
+MAX-HEAP-INSERT(A, key)
+1. A.heap-size = A.heap-size + 1
+2. A[A.heap-size] = -infinity
+3. HEAP-INCREASE-KEY(A, A.heap-size, key)
+
