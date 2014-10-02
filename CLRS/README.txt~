@@ -8,7 +8,7 @@ General intentions:
       * (<random>) std::rand() for generation of pseudo-random data sets
 
 
-* Progress ('-' represent Chapters with content):
+* Progress:
 I. Foundatoins
 II. Sorting and Order Statistics
 - 6 Heapsort 
