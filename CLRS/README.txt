@@ -9,9 +9,11 @@ General intentions:
 
 
 * Progress ('-' represent Chapters with content):
-I. Foundatoins
+0. [Augmented Types]
+I. Foundations
 II. Sorting and Order Statistics
 - 6 Heapsort 
+- 7 Quicksort
 III. Data Structures
 - 13 Red-Black Trees
 - 14 Augmenting Data Structures

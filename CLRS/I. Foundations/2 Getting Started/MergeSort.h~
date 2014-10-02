@@ -42,7 +42,6 @@ void Merge(T *A, size_t p, size_t q, size_t r){
 		}
 		k++;
 	}
-
 	if (i != n1){
 		for (i; i < n1; i++)
 			A[k++] = L[i];
