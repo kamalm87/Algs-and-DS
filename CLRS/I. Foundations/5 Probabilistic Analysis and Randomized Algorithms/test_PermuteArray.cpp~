@@ -6,7 +6,7 @@
 // Permutes 2 arrays in-place:
 // - an array in descending order
 // - an array in ascending order
-void PeremutationTests(){
+void createPermutedArrayTest(){
 
 	int *A = new int[10]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 	int a0 = A[0];
@@ -97,6 +97,6 @@ void PeremutationTests(){
 }
 
 int main(){
-	PeremutationTests();
+	createPermutedArrayTest();
 }
 

@@ -13,7 +13,7 @@ Problems:
 	5-2 Searching an unsorted array
 
 5.1 The hiring problem
-	(LOG(N))
+
 	HIRE-ASSISTANT(n)
 	1.	best = 0	// candidate 0 is a least-qualified dummy candidate
 	2.	for i = 1 to n
@@ -26,7 +26,7 @@ Problems:
 
 
 5.3 Randomized algorithms
-	(LOG(N))
+
 	RANDOMIZED-HIRE-ASSISTANT(n)
 	1	randomly permute the list of candidates 
 	2.	best = 0	// candidate 0 is a least-qualified dummy candidate
@@ -36,7 +36,7 @@ Problems:
 	6.			best = i
 	7.			hire candidate i
 
-	(N*LOG(N))
+
 	PERMUTE-BY-SORTING(A)
 	1.	n = A.length
 	2.	let P[1..n] be a new array
@@ -44,7 +44,6 @@ Problems:
 	4.		P[i] = RANDOM(1,n^3)
 	5.	sort A, using P as sort keys
 
-	(O(N))
 	RANDOMIZE-IN-PLACE(A)
 	1.	n = A.length
 	2.	for i = 1 to n

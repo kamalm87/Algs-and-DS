@@ -5,6 +5,7 @@
 #include <random>
 #include <time.h>
 
+// Returns a permuted array based on sorting index values by an associated randomly generated variable
 template <typename T>
 T* PermuteBySorting(T* A, size_t n){
 	std::srand(time(nullptr));
@@ -19,6 +20,14 @@ T* PermuteBySorting(T* A, size_t n){
 		B[i] = A[P[i].Index];
 	return B;
 }
+
+// Permutes an array in place
+template <typename T>
+void RandomizeInPlace(T *A, size_t n){
+	for(size_t i = 0; i < n; i++)
+		Swap(A, i, Random(i,n));
+}
+
 
 // Based on methods from:
 // http://stackoverflow.com/questions/2509679/how-to-generate-a-random-number-from-within-a-range
@@ -38,7 +47,7 @@ template <typename T>
 void Swap(T *A, size_t i, size_t j){
 	T t = A[i];
 	A[i] = A[j];
-	A[j] = A[i];
+	A[j] = t;
 }
 
 // Represents an Pair with a generic value and an index.
