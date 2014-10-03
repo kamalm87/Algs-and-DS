@@ -1,2 +1,0 @@
-1. Clean up inversions' code.
-2. Add test functions for each alg/DS.
