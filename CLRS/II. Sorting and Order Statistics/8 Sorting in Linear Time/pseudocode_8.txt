@@ -1,0 +1,94 @@
+8 Sorting in Linear Time
+- 8.1 Lower bounds for sorting
+- 8.2 Counting sort
+- 8.3 Radix sort
+- 8.4 Bucket sort
+
+Problems
+- 8-1 Probabilistic lower bounds on comparison sorting
+- 8-2 Sorting in place in linear time
+- 8-3 Sorting variable-length items
+- 8-4 Water jugs
+- 8-5 Average sorting
+- 8-6 The 0-1 sorting lemma and columnsort
+
+
+COUNTING-SORT(A,B,k)
+1.  let C[0..k] be a new array
+2.  for i = 0 to k
+3.  	C[i] = 0 
+4.  for j = 1 to A.length
+5.	C[A[j]] = C[A[j]] + 1
+6.  // C[i] now contains the number of elements equal to i	
+7.  for i = 1 to k
+8.	C[i] = C[i] + C[i - 1]
+9.  // C[i] now contains the number of elements less than or equal to i
+10. for j = A.length downto 1
+11.	B[C[A[j]]] = A[j]
+12.	C[A[j]] = C[A[j]] - 1
+
+RADIX-SORT(A,d)
+1. for i 1 to d
+2.	use a stable sort to sort array A on digit i
+
+BUCKET-SORT(A)
+1. let B[0..n-1] be a new array
+2. n = A.length
+3. for i = 0 to n - 1
+4.	make B[i] an empty list
+5. for i = 1 to n
+6.	insert A[i] into list B[ floor(n A[i] ) ]
+7. for i = 0 to n - 1
+8.	sort list B[i] with insertion sort
+9. concatenate the lists B[0], B[1], ... , B[n - 1] together in order
+
+
+(where L is a doubly linked-list with a pointer to the list's head and
+pointers to the data, next node, prev node)
+ 
+LINKED-LIST-INSERTION-SORT(LL)
+1.  j = L.Head.Next
+2.  while j != j.NIL
+3.	key = j, i = j.Prev
+4.	while i AND i.Data > key.Data
+5.		L.Swap(i, i.Prev)
+6.		i = i.Prev
+7.	if i != L.NIL
+8.		L.Swap(i.Next, key)
+9.	else
+10.		L.Swap(L.Head, key)
+11.	j = j.Next
+
+(where L is a doubly linked-list with a pointer to the list's head and
+pointers to the data, next node, prev node)
+(Left and Right are the Nodes to be swapped
+LINKED-LIST-SWAP(Left, Right)
+1.  if Left = L.Nil or Right = L.Nil or L == R
+2.	return
+3.  else if Left.Next == Right or Right.Next == Left	  
+4.	// Nodes are adjacent, can swap data
+5.	t = Left.Data
+6.	Left.Data = Right.Data
+7.	Right.Data = t
+8.  else	
+9.	TempNode.Next = Left.Next, TempNode.Prev = Left.Prev 
+10.	// Swap left poitners
+11.	Left.Next = Right.Next
+12.	if Left.Next != L.Nil
+13.		Left.Next.Prev = Left
+14.	Left.Prev = Right.Prev	
+15.	if Left.Prev
+16.		Left.Prev.Next = Left
+17.	// Swap right pointers 
+18.	Right.Next = TempNode.Next
+19.	if Right.Next
+20.		Right.Next.Prev = Right
+21.	// Reassign the Head/Tail, if necessary
+22.	if Left.Prev == L.Nil
+24.		L.Head = Left
+25.	if Right.Prev == L.Nil
+26.		L.Head = Right
+27.	if Left.Prev == L.Nil
+28.		L.Tail = Left
+29.	if Right.Prev == L.Nil
+30.		L.Tail = Right

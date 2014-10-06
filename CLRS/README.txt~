@@ -11,6 +11,8 @@ General intentions:
 * Progress ('-' represent Chapters with content):
 0. [Augmented Types]
 I. Foundations
+- 4 Divide-and-Conquer (4.1 Max Subarray only)
+- 5 Probabilistic Analysis and Randomized Algorithms (5.3 Permutations only)
 II. Sorting and Order Statistics
 - 6 Heapsort 
 - 7 Quicksort

@@ -11,6 +11,9 @@ General intentions:
 * Progress ('-' represent Chapters with content):
 0. [Augmented Types]
 I. Foundations
+- 1 The Role of Algorithms in Computing (NOTHING TO IMPLEMENT) 
+- 2 Getting Started 
+- 3 Growth of Functions  (NOTHING TO IMPLEMENT)
 - 4 Divide-and-Conquer (4.1 Max Subarray only)
 - 5 Probabilistic Analysis and Randomized Algorithms (5.3 Permutations only)
 II. Sorting and Order Statistics
