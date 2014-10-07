@@ -9,6 +9,8 @@ Problems
 - 9-3 Small order statistics
 - 9-4 Alternative analysis of randomized selection
 
+(9.1)
+O(N)
 MINIMUM(A)
 1. min = A[1]
 2. for i = 2 to A.length
@@ -16,6 +18,8 @@ MINIMUM(A)
 4.		min = A[i]
 5. return min
 
+(9.1)
+O(N)
 MAXIMUM(A)
 1. max = A[1]
 2. for i = 2 to A.length
@@ -23,6 +27,37 @@ MAXIMUM(A)
 4.		max = A[i]
 5. return max
 
+(9.1)
+O(N) ( 3 * floor(n/2))
+MIN-MAX(A)
+1. n = A.length, i
+2. if n % 2 == 0
+3.	min = max = A[0] 
+4.	i = 1
+5. else	
+6.	if A[0] < A[1]
+7.		min = A[0]
+8.		max = A[1]
+9.	else
+10.		max = A[0]	
+11.		min = A[1]
+12.	i = 2
+13. for i to n, incremeneting by 2	
+14.	if A[i] < A[i + 1]
+15.		tempMin = A[i]
+16.		tempMax = A[i + 1]
+17.	else
+18.		tempMin = A[i + 1]
+19.		tempMax = A[i]
+20.	if tempMin < min
+21.		min = tempMin
+22.	if tempMax > max
+23.		max = tempMax
+24. return (min, max)
+
+
+(9.2)
+O(N)
 RANDOMIZED-SELECT(A,p,r,i)
 1. if p == r
 2.	return A[p]

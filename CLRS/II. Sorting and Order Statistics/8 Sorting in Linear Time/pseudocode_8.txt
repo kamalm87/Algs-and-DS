@@ -12,7 +12,8 @@ Problems
 - 8-5 Average sorting
 - 8-6 The 0-1 sorting lemma and columnsort
 
-
+(8.2)
+Theta(n+k) => Theta(n) where n = k
 COUNTING-SORT(A,B,k)
 1.  let C[0..k] be a new array
 2.  for i = 0 to k
@@ -27,10 +28,14 @@ COUNTING-SORT(A,B,k)
 11.	B[C[A[j]]] = A[j]
 12.	C[A[j]] = C[A[j]] - 1
 
+(8.3)
+Theta(d(n+k)), where the stable sort: Theta(n+k)
 RADIX-SORT(A,d)
 1. for i 1 to d
 2.	use a stable sort to sort array A on digit i
 
+(8.4)
+O(N), assuming the elements in A are evenly distributed between (0,1]
 BUCKET-SORT(A)
 1. let B[0..n-1] be a new array
 2. n = A.length
@@ -43,9 +48,9 @@ BUCKET-SORT(A)
 9. concatenate the lists B[0], B[1], ... , B[n - 1] together in order
 
 
+O(N^2)
 (where L is a doubly linked-list with a pointer to the list's head and
 pointers to the data, next node, prev node)
- 
 LINKED-LIST-INSERTION-SORT(LL)
 1.  j = L.Head.Next
 2.  while j != j.NIL
@@ -59,8 +64,11 @@ LINKED-LIST-INSERTION-SORT(LL)
 10.		L.Swap(L.Head, key)
 11.	j = j.Next
 
+
+O(1)
 (where L is a doubly linked-list with a pointer to the list's head and
 pointers to the data, next node, prev node)
+(where L.NIL represents what is used to mark no link)
 (Left and Right are the Nodes to be swapped
 LINKED-LIST-SWAP(Left, Right)
 1.  if Left = L.Nil or Right = L.Nil or L == R
@@ -92,3 +100,14 @@ LINKED-LIST-SWAP(Left, Right)
 28.		L.Tail = Left
 29.	if Right.Prev == L.Nil
 30.		L.Tail = Right
+
+Theta(N), where N is the number of elements in all of linked lists 
+(Where A is the array, B is an array of linked lists, and n is the number of linked lists in B)
+CONCATENATE-LINKED-LISTS-INTO-ARRAY(A, B, n)
+1. count = 0
+2. i = 1 to n
+3.	C = B[i].Head
+4.	while C != B[i].NIL
+5.		A[count] = C.Data	
+6.		count = count + 1
+7.		C = C.Next
