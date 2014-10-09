@@ -41,7 +41,7 @@ namespace KNM_DS{
 		size_t Length;
 		LinkedList<T>() : Head(nullptr), Tail(nullptr), Length(0){}
 		LinkedList<T>(Node<T>* head) : Head(head), Tail(head) Length(0){}
-	
+
 		void addToTail(T data){
 			addToTail(new Node<T>(data));
 		}
@@ -62,30 +62,41 @@ namespace KNM_DS{
 			}
 		}
 
+		void addToHead(T data){
+			addToHead(new Node<T>(data));
+		}
+
+		void addToHead(Node<T> *n){
+			if (!Head)
+			{
+				Head = n;
+				Tail = n;
+				
+			}
+			else{
+				Head->Prev = n;
+				n->Next = Head;
+				Head = n;
+				Length++;
+			}
+		}
+
 		bool Delete(T d){
 			Node<T>* n = Find(d);
 			if (!n) return false;
-			else 
+			else
 				return Delete(n);
 		}
 
 		bool Delete(Node<T>* n){
 			if (!n) return false;
-
-			Node<T> *PrevNode = n->Prev, *NextNode = n->Next;
-			if (PrevNode && NextNode){
-				PrevNode->Next = NextNode;
-				NextNode->Prev = NextNode;
-			}else if (PrevNode){
-				PrevNode->Next = nullptr;
-				Tail = PrevNode;
-			}else if (NextNode){
-				NextNode->Prev = nullptr;
-				Head = NextNode;
-			}else{
-				Tail = Head = nullptr;
-			}
-
+			if (n->Prev)
+				n->Prev->Next = n->Next;
+			else
+				Head = n;
+			if (n->Next)
+				n->Next->Prev = n->Prev;
+			
 			Length--;
 			delete n;
 			return true;
@@ -111,7 +122,7 @@ namespace KNM_DS{
 		void Swap(Node<T> *Left, Node<T>* Right){
 			if (!Left || !Right) return;
 			if (Left == Right) return;
-			else if (Left->Next == Right || Right->Next == Left){  
+			else if (Left->Next == Right || Right->Next == Left){
 				// if the nodes are adjacent, just swap the data
 				T t = Left->Data;
 				Left->Data = Right->Data;
@@ -132,8 +143,8 @@ namespace KNM_DS{
 
 				if (Left->Prev)
 					Left->Prev->Next = Left;
-				
-				
+
+
 				Right->Next = TempNode->Next;
 				if (Right->Next)
 					Right->Next->Prev = Right;
@@ -150,7 +161,7 @@ namespace KNM_DS{
 
 		void InsertionSort(){
 			Node<T> *j = Head->Next;
-			while(j){
+			while (j){
 				Node<T> *key = j, *i = j->Prev;
 
 				while (i && i->Data > key->Data){
@@ -162,5 +173,6 @@ namespace KNM_DS{
 			}
 		}
 	};
-	
+
 }
+

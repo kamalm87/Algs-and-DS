@@ -1,0 +1,143 @@
+10 Elementary Data Structures
+- 10.1 Stacks and queues
+- 10.2 Linked lists 
+- 10.3 Implementing pointers and objects
+- 10.4 Representings rooted trees
+
+Problems
+- 10-1 Comparisons among lists
+- 10-2 Mergeable heaps usings linked lists
+- 10-3 Searching a sorted compact list
+
+Pseudocode
+
+(10.1)
+O(1)
+STACK-EMPTY(S)
+1. if S.top == 0
+2.	return TRUE
+3. else return FALSE
+
+(10.1)
+O(1)
+PUSH(S, x)
+1. S.top = S.top + 1
+2. S[S.top] = x;
+
+(10.1)
+O(1)
+POP(S)
+1. if STACK-EMPTY(S)
+2.	error "underflow"
+3. else S.top = S.top - 1	
+4.	return S[ S.top + 1]
+
+(10.1)
+O(1)
+ENQUEUE(Q, x)
+1. Q[Q.tail] = x
+2. if Q.tail == Q.length
+3. 	Q.tail = 1
+4. else Q.tail = Q.tail + 1
+
+(10.1)
+O(1)
+DEQUEUE(Q)
+1. x = Q[Q.head]
+2. if Q.head == Q.length
+3.	Q.head = 1
+4. else Q.tail = Q.tail + 1
+
+
+(10.2)
+O(N)
+LIST-SEARCH(L, k)
+1. x = L.head
+2. while x != NIL
+3. 	x = x.next
+4. return x
+
+(10.2)
+O(1)
+LIST-INSERT(L, x)
+1. x.next = L.head
+2. if L.head != NIL
+3.	L.head.prev = x
+4. L.head = x
+5. x.prev = NIL
+
+
+(10.2)
+O(1)
+LIST-DELETE(L, x)
+1. if x.prev != NIL
+2.	x.prev.next = x.next
+3. else L.head = x.next	
+4. if x.next != NIL	
+5.	x.next.prev = x.prev
+
+
+(10.2)
+O(1)
+LIST-DELETE'(L, x)
+1. x.prev.next = x.next
+2. x.next.prev = x.prev
+
+(10.2)
+O(1)
+LIST-SEARCH'(L, k)
+1. x = L.NIL.next
+2. while x != L.NIL and x.key != k
+3.	x = x.next
+4. return x
+
+(10.2)
+O(1)
+LIST-INSERT'(L, x)
+1. x.next = L.NIL.next
+2. L.NIL.next.prev = x
+3. L.nil.next = x
+4. x.prev = L.nil
+
+(10.3)
+ALLOCATE-OBJECT()
+1. if free == NIL  
+2.	error "out of space"
+3. else x = free
+4.	free = x.next
+5.	return x
+
+(10.3)
+FREE-OBJECT(x)
+1. x.next = free
+2. free = x
+
+
+(Problem 10-3)
+COMPACT-LIST-SEARCH(L, n, k)
+1.  i = L
+2.  while i != NIL and key[i] < k
+3.	j = RANDOM(1,n)
+4.	if key[i] < key[j] and key[j] <= k
+5.		i = j
+6.		if key[i] == k
+7.			return i
+8.	i = next[i]
+9.  if i == NIL or key[i] > k	
+10.	return NIL
+11. else return i
+
+(Problem 10-3)
+COMPACT-LIST-SEARCH'(L, n, k)
+1.  i = L
+2.  for q = 1 to t
+3.	j = RANDOM(1,n)
+4.	if key[i] < key[j] and key[j] <= k
+5.		i = j
+6.		if key[i] == k
+7.			return i
+8.  while i != NIL or key[i] > k
+9.  	i = next[i]
+10. if i == NIL or key[i] >
+11.	return NIL 
+12. else return i
