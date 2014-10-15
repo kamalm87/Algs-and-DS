@@ -87,20 +87,29 @@ namespace KNM_DS{
 			else
 				return Delete(n);
 		}
-
+    		
+    		// TODO: Test all edge cases: deleting head/tails
 		bool Delete(Node<T>* n){
-			if (!n) return false;
+    			if (!n) 
+            			return false;
 			if (n->Prev)
 				n->Prev->Next = n->Next;
 			else
-				Head = n;
+		    		Head = n;
 			if (n->Next)
-				n->Next->Prev = n->Prev;
-			
+		    		n->Next->Prev = n->Prev;
+        		if(n == Tail)
+        		{
+            			n->Prev->Next = nullptr;
+        		}
+        		if(n == Head){
+            			Head = n->Next;
+        		}
 			Length--;
 			delete n;
 			return true;
 		}
+
 
 		bool Contains(T d){
 			if (Find(d) == nullptr) return false;
