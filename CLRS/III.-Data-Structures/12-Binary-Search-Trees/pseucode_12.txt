@@ -1,0 +1,14 @@
+12 Binary Search Trees
+- 12.1 What is a binary search tree
+- 12.2 Querying a binary search tree
+- 12.3 Insertion and deletion
+- 12.4 (*)Randomly built binary search trees 
+
+TODO: THIS
+Pseudcode:
+
+Problems
+- 12-1: Binary search trees with equal trees
+- 12.2: Radix trees
+- 12.3: Average node depth in a randomly built binary search tree
+- 12.4: Number of different binary trees
