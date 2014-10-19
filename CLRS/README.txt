@@ -19,9 +19,14 @@ I. Foundations
 II. Sorting and Order Statistics
 - 6 Heapsort 
 - 7 Quicksort
+- 8 Sorting in Linear Time
+- 9 Medians and Order Statistics (TODO: Select-of-Medians )
 III. Data Structures
+- 10 Elementary Data Structures
+- 11 Hash Tables
 - 13 Red-Black Trees
 - 14 Augmenting Data Structures
 IV. Advanced Design and Analysis Techniques
 - 15 Dynamic Programming (Only 15.1)
-
+V. Advanced Data Structures
+- 21 Data Structures for Disjoint Sets
