@@ -1,0 +1,81 @@
+22 Elementary Graph Algorithms
+- 22.1 Representations of graphs
+- 22.2 Breadth-first search
+- 22.3 Depth-first search
+- 22.4 Topological sort
+- 22.5 Strongly connected components
+
+Pseudocode
+
+(22.2)
+O( V + E )
+BFS(G,s)
+1. for each vertex u in G.S - {s}
+2.   u.color = WHITE
+3.   u.d = infinity
+4.   u.Parent = NIL
+5. s.color = GRAY
+6. s.d = 0
+7. s.parent = NIL
+8. Q = empty-set
+9. ENQUEUE(Q,s)
+10. while Q != empty-set
+11.     u = DEQUEUE(Q)
+12.     for each v in G.Adj[u]
+13.         if v.color == WHITE
+14.             v.color = GRAY
+15.             v.d = u.d + 1
+16.             v.parent = u
+17.             ENQUEUE(Q,v)
+18.     u.color = BLACK
+
+(22.2)
+PRINT-PATH(G,s,v)
+1. if v == s
+2.   print s
+3. elseif v.parent = NIL
+4.   print "no path from s to v exists"
+5. else PRINT-PATH(G, s, v.parent)
+6.   print v
+
+(22.3)
+DFS(G)
+1. for each vertex u in G.V
+2.      u.color = WHITE
+3.      u.parent = NIL
+4. time = 0
+5. for each vertex u in G.V
+6.      if u.color == WHITE
+7.          DFS-VISIT(G, u)
+
+(22.3)
+DFS-VISIT(G, u)
+1.  time = time + 1
+2.  u.d = time
+3.  u.color = GRAY
+4.  for each v in G.Adj[u]
+5.    if v.color == WHITE
+6.      v.parent = u
+7.      DFS-VISIT(G, v)
+8.  u.color = BLACK
+9.  time = time + 1
+10. u.f = time
+
+(22.4)
+TOPOLOGICAL-SORT(G)
+1. call DFS(G) to compute finishing times v.f for each vertex v
+2. as each vertex is finished, insert it onto the front of a linked list
+3. return the linked list of vertices
+
+(22.5)
+STRONGLY-CONNECTED-COMPONENTS(G)
+1. call DFS(G) to compute finishing times u.f for each vertex u
+2. compute the transpose of G 
+3. call DFS (transpote of G), but in the main loop of DFS, consider the
+   vertices in order of decreasing u.f (As computed in line 1)
+4. output the vertices of each tree in the depth-first forest formed in line 3
+   as a separate strongly connected component
+
+Problems
+- 22-1 Classifying edges by breadth-first search
+- 23-2 Articulation points, bridges, and biconnected components
