@@ -22,12 +22,7 @@
 template <typename T>
 class Graph{
 private:
-   
-    enum VColor{
-        WHITE,
-        GRAY,
-        BLACK
-    };
+    enum VColor{ WHITE, GRAY, BLACK };
 
     template <typename U>
     struct Vertex{
@@ -35,7 +30,6 @@ private:
         Vertex(U d): Data(d){}
         U Data;
         LinkedList<Vertex<U>*> Adj;
-        
         Vertex<T> *Parent;
 
         // For Breadth-First Search
@@ -50,8 +44,6 @@ private:
     struct Edge{
        Edge(Vertex<U> *From = nullptr, Vertex<T> *To = nullptr, int w = 0) : From(From), To(To), Weight(w){} 
        Vertex<U> *From, *To;
-        
-       
        int Weight;
     };    
 
@@ -59,13 +51,20 @@ private:
     Set< Edge<T>* > E;
     bool Weighted = false;
     Vertex<T> *NIL;
-
+    LinkedList<T> *topologicalSorting = nullptr;
     // For DepthFirstSearch
     int Time;    
-public:
-    // TODO: Temp debugging area
+   
+    Mapping<T, Vertex<T>* > vMap;
 
-         std::string GetColor(Vertex<T>* v){
+public:
+ 
+   // TODO: Would be ideal to encapsulate this mapping 
+
+   // Prints a vertex's color
+   // USE: For debugging to ensure that an algorithm visits/alters every
+   // expected vertex
+   std::string GetColor(Vertex<T>* v){
         if(v->c == WHITE)
             return "WHITE";
         else if (v->c == GRAY)
@@ -74,14 +73,40 @@ public:
             return "BLACK";
     }
    
+    // Creates and returns a topologically sorted linked list
+    // , using an augmentation version of Depth-First Search,
+    // which appends vertex's data to the linked list's head 
+    // upon completion (assignment of the vertex's finished variable)
     LinkedList<T> TopologicalSort(){
-        LinkedList<T> ll;
-        DepthFirstSearch(ll);
-        return ll;
+        topologicalSorting = new LinkedList<T>();
+        DepthFirstSearch(topologicalSorting);
     }
-    // TODO: Would be ideal to encapsulate this mapping 
-    Mapping<T, Vertex<T>* > vMap;
+    
+    void printTopologicalSortedResults(){
 
+        // lazy instantiation of the sorting, if necessary
+        if(!topologicalSorting )
+            TopologicalSort();
+        auto n = topologicalSorting->Head; 
+        if(n){
+            std::cout << std::endl;
+            std::cout << "Toplogical sorting results:" << std::endl;
+        }
+        else{
+            return; // Nothing topologically sorted
+        }
+        while(n){
+            if( n != topologicalSorting->Tail)
+                std::cout << n->Data << "->";
+            else
+                std::cout << n->Data;
+            
+            n = n->Next;
+        }
+
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
     
     // Default constructor simply creates a dummy NIL pointer vertex 
     // Other variables are intialized/assigned within methods using them 
@@ -207,7 +232,7 @@ public:
     // DFS algorithm, with the addition of inserting a node's
     // data into the referenced linked list's head after it's finished
     // processing at the end of the DFS-Visit subroutine 
-    void DepthFirstSearch(LinkedList<T> & ll){
+    void DepthFirstSearch(LinkedList<T> * ll){
          
         Vertex<T> *b = V.Minimum();
         Vertex<T> *e = V.Maximum();
@@ -231,7 +256,7 @@ public:
             DFS_Visit(b, ll);
     }
 
-    void DFS_Visit(Vertex<T> *u, LinkedList<T> &ll){
+    void DFS_Visit(Vertex<T> *u, LinkedList<T> *ll){
         Time++;
         u->Discovered = this->Time;
         u->c = GRAY;
@@ -253,7 +278,7 @@ public:
         u->Finished = Time;
         // Topological Sort infusion: after a given vertex's recursive stack
         // finishes, the node is added into the list's head 
-        ll.AddToHead(u->Data);
+        ll->AddToHead(u->Data);
     }
 
     // TODO: Remove whenever, just for crude debugging
@@ -322,5 +347,40 @@ public:
             return false;
         }
   }
-    
+
+  // Prints out the vertices values relative to a Breadth-First Search
+  // Note: Assumes the type operator, T, supports the '<<' operator for console
+  //       output
+  void printDepthFirstSearchResults(){
+        auto b = V.Minimum();
+        auto e = V.Maximum();
+ 
+        std::cout << std::endl;
+        std::cout << "Depth-First Search vertex data:" << std::endl;
+  
+        while(b < e){
+            std::cout << b->Data << " D: " << b->Discovered << " F: " << b->Finished << " C: " <<  GetColor(b) << std::endl;
+            b = V.Successor(b);
+        }
+        std::cout << e->Data << " D: " << e->Discovered << " F: " << e->Finished << " C: " <<  GetColor(e) << std::endl;
+        std::cout << std::endl << std::endl;
+}  
+
+  // Prints out the vertices values relative to a Depth-First Search
+  // Note: Assumes the type operator, T, supports the '<<' operator for console
+  //       output
+  void printBreadthFirstSearchResults(){
+        auto b = V.Minimum();
+        auto e = V.Maximum();
+        
+        std::cout << std::endl;
+        std::cout << "Breadth-First Search vertex data:" << std::endl;
+
+        while(b < e){
+            std::cout << b->Data << " D: " << b->Distance << " C: " <<  GetColor(b) << std::endl;
+            b = V.Successor(b);
+        }
+        std::cout << e->Data << " D: " << e->Distance << " C: " <<  GetColor(e) << std::endl;
+        std::cout << std::endl << std::endl;
+  }  
 };

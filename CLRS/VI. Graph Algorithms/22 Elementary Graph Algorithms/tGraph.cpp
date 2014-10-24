@@ -9,34 +9,38 @@ void Figure_22_4();
 void Figure_22_5();
 void Figure_22_6();
 void Figure_22_7();
+void Figure_22_8();
 
 void testBreadthFirstSearch(){
+    std::cout << "*********************************************" << std::endl; 
     std::cout << "Figure 22.3's BFS Results:" << std::endl;
     Figure_22_3();
-    std::cout << std::endl << std::endl;
-   
+    std::cout << "*********************************************" << std::endl; 
 }
 
 void testDepthFirstSearch(){
-  
+    
+    std::cout << "*********************************************" << std::endl; 
     std::cout << "Figure 22.4's DFS Results:" << std::endl;
     Figure_22_4();
-
-    std::cout << std::endl << std::endl;
-
+    std::cout << "*********************************************" << std::endl; 
+    
+    std::cout << "*********************************************" << std::endl; 
     std::cout << "Figure 22.5's DFS Results:" << std::endl;
     Figure_22_5();
-
-    std::cout << std::endl << std::endl;
-
+    std::cout << "*********************************************" << std::endl; 
+    
+    std::cout << "*********************************************" << std::endl; 
     std::cout << "Figure 22.6's DFS Results:" << std::endl;
     Figure_22_6();
+    std::cout << "*********************************************" << std::endl; 
 
 }
 
 
 void testTopologicalSort(){
     Figure_22_7();
+    Figure_22_8();
 }
 
 void Figure_22_3(){
@@ -50,7 +54,6 @@ void Figure_22_3(){
     g.AddVertex('t');
     g.AddVertex('u');
     g.AddVertex('y');
-
     
     g.AddUndirectedEdge('v', 'r');
     g.AddUndirectedEdge('r', 's');
@@ -62,37 +65,9 @@ void Figure_22_3(){
     g.AddUndirectedEdge('x', 'u');
     g.AddUndirectedEdge('x', 'y');
     g.AddUndirectedEdge('u', 'y');
-  
-    g.printVertexInfo('s');
-    g.printVertexInfo('r');
-    g.printVertexInfo('v');
-    g.printVertexInfo('w');
-    g.printVertexInfo('x');
-    g.printVertexInfo('t');
-    g.printVertexInfo('u');
-    g.printVertexInfo('y');
 
     g.BreadthFirstSearch();
-
-    auto s = g.vMap['s'];
-    auto r = g.vMap['r'];
-    auto v = g.vMap['v'];
-    auto w = g.vMap['w'];
-    auto x = g.vMap['x'];
-    auto t = g.vMap['t'];
-    auto u = g.vMap['u'];
-    auto y = g.vMap['y'];
-
-    std::cout << s->Data << ", D: " << s->Distance  << ", C: "  << g.GetColor(s) << std::endl;
-    std::cout << r->Data << ", D: " << r->Distance  << ", C: "  << g.GetColor(r) << std::endl;
-    std::cout << v->Data << ", D: " << v->Distance  << ", C: "  << g.GetColor(v) << std::endl;
-    std::cout << w->Data << ", D: " << w->Distance  << ", C: "  << g.GetColor(w) << std::endl;
-    std::cout << x->Data << ", D: " << x->Distance  << ", C: "  << g.GetColor(x) << std::endl;
-    std::cout << t->Data << ", D: " << t->Distance  << ", C: "  << g.GetColor(t) << std::endl;
-    std::cout << u->Data << ", D: " << u->Distance  << ", C: "  << g.GetColor(u) << std::endl;
-    std::cout << y->Data << ", D: " << y->Distance  << ", C: "  << g.GetColor(y) << std::endl;
-
-
+    g.printBreadthFirstSearchResults();
 }
 
 void Figure_22_4(){
@@ -112,35 +87,9 @@ void Figure_22_4(){
     g.AddEdge('w', 'y');
     g.AddEdge('w', 'z');
     g.AddEdge('z', 'z');
-    
-    g.printVertexInfo('u');
-    g.printVertexInfo('v');
-    g.printVertexInfo('w');
-    g.printVertexInfo('x');
-    g.printVertexInfo('y');
-    g.printVertexInfo('z');
-
-
-
-    auto u = g.vMap['u'];
-    auto v = g.vMap['v'];
-    auto w = g.vMap['w'];
-    auto x = g.vMap['x'];
-    auto y = g.vMap['y'];
-    auto z = g.vMap['z'];
-
-
+   
     g.DepthFirstSearch();
-
-
-
-    std::cout << u->Data << " D: " << u->Discovered << " F: " << u->Finished << " C: " <<  g.GetColor(u) << std::endl;
-    std::cout << v->Data << " D: " << v->Discovered << " F: " << v->Finished << " C: " <<  g.GetColor(w) << std::endl;
-    std::cout << w->Data << " D: " << w->Discovered << " F: " << w->Finished << " C: " <<  g.GetColor(w) << std::endl;
-    std::cout << x->Data << " D: " << x->Discovered << " F: " << x->Finished << " C: " <<  g.GetColor(x) << std::endl;
-    std::cout << y->Data << " D: " << y->Discovered << " F: " << y->Finished << " C: " <<  g.GetColor(y) << std::endl;
-    std::cout << z->Data << " D: " << z->Discovered << " F: " << z->Finished << " C: " <<  g.GetColor(z) << std::endl;
-
+    g.printDepthFirstSearchResults();
 }
 
 void Figure_22_5(){
@@ -169,27 +118,8 @@ void Figure_22_5(){
     g2.AddEdge('u', 't');
     g2.AddEdge('u', 'v');
 
-
-    auto y = g2.vMap['y'];
-    auto z = g2.vMap['z'];
-    auto s = g2.vMap['s'];
-    auto t = g2.vMap['t'];
-    auto x = g2.vMap['x'];
-    auto w = g2.vMap['w'];
-    auto v = g2.vMap['v'];
-    auto u = g2.vMap['u'];
-
     g2.DepthFirstSearch();
-    
-    std::cout << y->Data << " D: " << y->Discovered << " F: " << y->Finished << " C: " <<  g2.GetColor(y) << std::endl;
-    std::cout << z->Data << " D: " << z->Discovered << " F: " << z->Finished << " C: " <<  g2.GetColor(z) << std::endl;
-    std::cout << s->Data << " D: " << s->Discovered << " F: " << s->Finished << " C: " <<  g2.GetColor(s) << std::endl;
-    std::cout << t->Data << " D: " << t->Discovered << " F: " << t->Finished << " C: " <<  g2.GetColor(t) << std::endl;
-    std::cout << x->Data << " D: " << x->Discovered << " F: " << x->Finished << " C: " <<  g2.GetColor(x) << std::endl;
-    std::cout << w->Data << " D: " << w->Discovered << " F: " << w->Finished << " C: " <<  g2.GetColor(w) << std::endl;
-    std::cout << v->Data << " D: " << v->Discovered << " F: " << v->Finished << " C: " <<  g2.GetColor(w) << std::endl;
-    std::cout << u->Data << " D: " << u->Discovered << " F: " << u->Finished << " C: " <<  g2.GetColor(u) << std::endl;
-
+    g2.printDepthFirstSearchResults();
 }
 
 void Figure_22_6(){
@@ -230,46 +160,12 @@ void Figure_22_6(){
     g.AddEdge('r', 'y');
     // u's 1 edge
     g.AddEdge('u', 'y');
-
-
-    auto q = g.vMap['q'];
-    auto r = g.vMap['s'];
-    auto s = g.vMap['s'];
-    auto t = g.vMap['t'];
-    auto u = g.vMap['u'];
-    auto v = g.vMap['v'];
-    auto w = g.vMap['w'];
-    auto x = g.vMap['x'];
-    auto y = g.vMap['y'];
-    auto z = g.vMap['z'];
-
-    std::cout << q->Data << " D: " << q->Discovered << " F: " << q->Finished << " C: " <<  g.GetColor(q) << std::endl;
-    std::cout << r->Data << " D: " << r->Discovered << " F: " << r->Finished << " C: " <<  g.GetColor(r) << std::endl;
-    std::cout << s->Data << " D: " << s->Discovered << " F: " << s->Finished << " C: " <<  g.GetColor(s) << std::endl;
-    std::cout << t->Data << " D: " << t->Discovered << " F: " << t->Finished << " C: " <<  g.GetColor(t) << std::endl;
-    std::cout << u->Data << " D: " << u->Discovered << " F: " << u->Finished << " C: " <<  g.GetColor(u) << std::endl;
-    std::cout << v->Data << " D: " << v->Discovered << " F: " << v->Finished << " C: " <<  g.GetColor(v) << std::endl;
-    std::cout << w->Data << " D: " << w->Discovered << " F: " << w->Finished << " C: " <<  g.GetColor(w) << std::endl;
-    std::cout << x->Data << " D: " << x->Discovered << " F: " << x->Finished << " C: " <<  g.GetColor(x) << std::endl;
-    std::cout << y->Data << " D: " << y->Discovered << " F: " << y->Finished << " C: " <<  g.GetColor(y) << std::endl;
-    std::cout << z->Data << " D: " << z->Discovered << " F: " << z->Finished << " C: " <<  g.GetColor(z) << std::endl;
-
+    
+    std::cout << "Vertex info prior to BFS";
+    g.printDepthFirstSearchResults();
     g.DepthFirstSearch();
-    std::cout << std::endl << "After DFS:" << std::endl;
-    
-    std::cout << q->Data << " D: " << q->Discovered << " F: " << q->Finished << " C: " <<  g.GetColor(q) << std::endl;
-    std::cout << r->Data << " D: " << r->Discovered << " F: " << r->Finished << " C: " <<  g.GetColor(r) << std::endl;
-    std::cout << s->Data << " D: " << s->Discovered << " F: " << s->Finished << " C: " <<  g.GetColor(s) << std::endl;
-    std::cout << t->Data << " D: " << t->Discovered << " F: " << t->Finished << " C: " <<  g.GetColor(t) << std::endl;
-    std::cout << u->Data << " D: " << u->Discovered << " F: " << u->Finished << " C: " <<  g.GetColor(u) << std::endl;
-    std::cout << v->Data << " D: " << v->Discovered << " F: " << v->Finished << " C: " <<  g.GetColor(v) << std::endl;
-    std::cout << w->Data << " D: " << w->Discovered << " F: " << w->Finished << " C: " <<  g.GetColor(w) << std::endl;
-    std::cout << x->Data << " D: " << x->Discovered << " F: " << x->Finished << " C: " <<  g.GetColor(x) << std::endl;
-    std::cout << y->Data << " D: " << y->Discovered << " F: " << y->Finished << " C: " <<  g.GetColor(y) << std::endl;
-    std::cout << z->Data << " D: " << z->Discovered << " F: " << z->Finished << " C: " <<  g.GetColor(z) << std::endl;
-
-    
-    std::cout << std::endl;
+    std::cout << "Preforming Depth-First Search";   
+    g.printDepthFirstSearchResults();
 }
 
 void Figure_22_7(){
@@ -300,71 +196,72 @@ void Figure_22_7(){
 
     g.AddEdge("tie", "jacket");
 
+    g.printTopologicalSortedResults();
+    g.printDepthFirstSearchResults();
+}
 
-    g.printVertexInfo("undershorts");
-    g.printVertexInfo("pants");
-    g.printVertexInfo("belt");
-    g.printVertexInfo("shirt");
-    g.printVertexInfo("tie");
-    g.printVertexInfo("jacket");
-    g.printVertexInfo("socks");
-    g.printVertexInfo("shoes");
-    g.printVertexInfo("watch");
+void Figure_22_8(){
+    Graph<char> g;
+    for(int i = 109; i < 123; i++)
+        g.AddVertex(static_cast<char>(i));
+
+    // add m's 3 directed edges
+    g.AddUndirectedEdge('m', 'x'); 
+    g.AddUndirectedEdge('m', 'q');
+    g.AddUndirectedEdge('m', 'r');
+    
+    // add n's 3 directed edges
+    g.AddUndirectedEdge('n', 'q'); 
+    g.AddUndirectedEdge('n', 'u');
+    g.AddUndirectedEdge('n', 'o');
+
+    // add o's 2 directed edges
+    g.AddUndirectedEdge('o', 'r'); 
+    g.AddUndirectedEdge('o', 's');
+
+    // add p's 3 directed edges
+    g.AddUndirectedEdge('p', 'o'); 
+    g.AddUndirectedEdge('p', 's');
+    g.AddUndirectedEdge('p', 'z');
+
+    // add q's 1 directed edge
+    g.AddUndirectedEdge('q', 't'); 
+
+    // add r's 1 directed edges
+    g.AddUndirectedEdge('r', 'u'); 
+
+    // add s's 3 directed edges
+    g.AddUndirectedEdge('s', 'r'); 
+
+    // DO NOT direct edges to t
    
+    // add u's 1 directed edge
+    g.AddUndirectedEdge('u', 't'); 
+  
+    // add v's 2 directed edges
+    g.AddUndirectedEdge('v', 'x'); 
+    g.AddUndirectedEdge('v', 'w'); 
 
-    auto undershorts = g.vMap["undershorts"];
-    auto pants = g.vMap["pants"];
-    auto belt = g.vMap["belt"];
-    auto shirt = g.vMap["shirt"];
-    auto tie = g.vMap["tie"];
-    auto jacket = g.vMap["jacket"];
-    auto socks = g.vMap["socks"];
-    auto shoes = g.vMap["shoes"];
-    auto watch = g.vMap["watch"];
+    // add w's 1 directed edge
+    g.AddUndirectedEdge('w', 'z'); 
 
-    std::cout << undershorts->Data << " D: " << undershorts->Discovered << " F: " << undershorts->Finished << " C: " <<  g.GetColor(undershorts) << std::endl;
-    std::cout << belt->Data << " D: " << belt->Discovered << " F: " << belt->Finished << " C: " <<  g.GetColor(belt) << std::endl;
-    std::cout << pants->Data << " D: " << pants->Discovered << " F: " << pants->Finished << " C: " <<  g.GetColor(pants) << std::endl;
-    std::cout << shirt->Data << " D: " << shirt->Discovered << " F: " << shirt->Finished << " C: " <<  g.GetColor(shirt) << std::endl;
-    std::cout << tie->Data << " D: " << tie->Discovered << " F: " << tie->Finished << " C: " <<  g.GetColor(tie) << std::endl;
-    std::cout << jacket->Data << " D: " << jacket->Discovered << " F: " << jacket->Finished << " C: " <<  g.GetColor(jacket) << std::endl;
-    std::cout << socks->Data << " D: " << socks->Discovered << " F: " << socks->Finished << " C: " <<  g.GetColor(socks) << std::endl;
-    std::cout << shoes->Data << " D: " << shoes->Discovered << " F: " << shoes->Finished << " C: " <<  g.GetColor(shoes) << std::endl;
-    std::cout << watch->Data << " D: " << watch->Discovered << " F: " << watch->Finished << " C: " <<  g.GetColor(watch) << std::endl;
+    // DO NOT direct edges to x
 
+    // add y's 1 directed edge
+    g.AddUndirectedEdge('y', 'v'); 
 
-    std::cout << std::endl << std::endl; 
-    LinkedList<std::string> ll =  g.TopologicalSort();
-    auto n = ll.Head;
+    // DO NOT direct edges to z
 
-    std::cout << std::endl << std::endl;
-        
-    std::cout << undershorts->Data << " D: " << undershorts->Discovered << " F: " << undershorts->Finished << " C: " <<  g.GetColor(undershorts) << std::endl;
-    std::cout << belt->Data << " D: " << belt->Discovered << " F: " << belt->Finished << " C: " <<  g.GetColor(belt) << std::endl;
-    std::cout << pants->Data << " D: " << pants->Discovered << " F: " << pants->Finished << " C: " <<  g.GetColor(pants) << std::endl;
-    std::cout << shirt->Data << " D: " << shirt->Discovered << " F: " << shirt->Finished << " C: " <<  g.GetColor(shirt) << std::endl;
-    std::cout << tie->Data << " D: " << tie->Discovered << " F: " << tie->Finished << " C: " <<  g.GetColor(tie) << std::endl;
-    std::cout << jacket->Data << " D: " << jacket->Discovered << " F: " << jacket->Finished << " C: " <<  g.GetColor(jacket) << std::endl;
-    std::cout << socks->Data << " D: " << socks->Discovered << " F: " << socks->Finished << " C: " <<  g.GetColor(socks) << std::endl;
-    std::cout << shoes->Data << " D: " << shoes->Discovered << " F: " << shoes->Finished << " C: " <<  g.GetColor(shoes) << std::endl;
-    std::cout << watch->Data << " D: " << watch->Discovered << " F: " << watch->Finished << " C: " <<  g.GetColor(watch) << std::endl;
-
-
-
-    std::cout << std::endl << std::endl;
-    std::cout << "Optimal order:" << std::endl;
-    while(n){
-        std::cout << ( n != ll.Tail ? n->Data + "->" : n->Data );
-        n = n->Next;
-    }
-    std::cout << std::endl;
-    int A = 1;
+    g.printTopologicalSortedResults();
+    g.printDepthFirstSearchResults();
 }
 
 int main(){
-     testBreadthFirstSearch();
-     testDepthFirstSearch();
-     testTopologicalSort();   
+
+    testBreadthFirstSearch();
+    testDepthFirstSearch();
+    testTopologicalSort();
     
+
     std::cout << std::endl << "We made it" << std::endl;
 }
