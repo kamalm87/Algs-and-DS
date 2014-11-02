@@ -17,8 +17,7 @@ template <typename T>
 			return false;
 		}
 		void Push(T x){
-			A.Insert(x);
-			top++;
+			A[top++] = x;
 		}
 
 		T Pop(){
