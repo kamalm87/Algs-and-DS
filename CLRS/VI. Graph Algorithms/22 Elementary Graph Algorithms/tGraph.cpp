@@ -10,6 +10,7 @@ void Figure_22_5();
 void Figure_22_6();
 void Figure_22_7();
 void Figure_22_8();
+void Figure_22_9();
 
 void testBreadthFirstSearch(){
     std::cout << "*********************************************" << std::endl; 
@@ -37,6 +38,11 @@ void testDepthFirstSearch(){
 
 }
 
+void testStronglyConnectedComponents(){
+ std::cout << "*********************************************" << std::endl; 
+ std::cout << "Figure 22.9's Strongly Connected Components Results:" << std::endl;
+ Figure_22_9();
+}
 
 void testTopologicalSort(){
     Figure_22_7();
@@ -256,12 +262,64 @@ void Figure_22_8(){
     g.printDepthFirstSearchResults();
 }
 
+void Figure_22_9(){
+	Graph<char> g;
+	g.AddVertex('a');
+	g.AddVertex('b');
+	g.AddVertex('c');
+	g.AddVertex('d');
+	g.AddVertex('e');
+	g.AddVertex('f');
+	g.AddVertex('g');
+	g.AddVertex('h');
+
+	// SCC: abe
+	g.AddEdge('a', 'b');
+	g.AddEdge('b', 'e');
+	g.AddEdge('e', 'a');
+
+	// SCC: cd
+	g.AddEdge('c', 'd');
+	g.AddEdge('d', 'c');
+
+  // SCC: h
+	g.AddEdge('h', 'h');
+
+
+	// SCC: fg
+	g.AddEdge('f', 'g');
+	g.AddEdge('g', 'f');
+
+  // cross-edge: h -> cd
+  g.AddEdge('h', 'd');
+
+	// cross-edge: abe -> fg
+	g.AddEdge('b', 'f');
+
+	// cross-edge: abe -> fg
+	g.AddEdge('e', 'f');
+
+	// cross-edge: abe -> cd
+	g.AddEdge('b', 'c');
+
+	// cross-edge: cdh -> fg
+	g.AddEdge('c', 'g');
+
+	// cross-edge: fg -> cdh
+	g.AddEdge('g', 'h');
+  
+  std::cout << std::endl << "Graph info" << std::endl << std::endl;
+  g.printVertices();
+
+  std::cout << "Strongly connected components: " << std::endl << std::endl;
+	g.PrintStronglyConnectedComponents();
+}
 int main(){
 
     testBreadthFirstSearch();
     testDepthFirstSearch();
     testTopologicalSort();
-    
+    testStronglyConnectedComponents();
 
     std::cout << std::endl << "We made it" << std::endl;
 }

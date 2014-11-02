@@ -1,5 +1,6 @@
 #include "Auxiliary/Map.h"
 #include "Auxiliary/LinkedList.h"
+#include "Auxiliary/Stack.h"
 #include "Auxiliary/Queue.h"
 
 // Implementation of a Graph data structure supporting generic parameters
@@ -57,9 +58,168 @@ private:
    
     Mapping<T, Vertex<T>* > vMap;
 
+    // Subroutine for StronglyConnectedComponents
+    // - Performs a DepthFirstSearch on the invoking graph
+    // - Returned stack contains vertex data in decreasing finish time order
+    //   (i.e. top of stack contains last finished vertex from the DFS)
+    Stack<T> DFS_Stack(){
+      Stack<T> s;
+		  Vertex<T> *b = V.Minimum(), *e = V.Maximum();
+  		while (b < e){
+  			b->c = WHITE;
+  			b->Parent = NIL;
+  			b = V.Successor(b);
+  		}
+  		e->c = WHITE;
+  		e->Parent = NIL;
+
+  		Time = 0;
+  		b = V.Minimum();
+  		while (b < e){
+  			if (b->c == WHITE){
+  				DFS_Stack_Visit(b, s);
+  			}
+  			b = V.Successor(b);
+  		}
+  		return s;
+    }
+    // Recursive DFS routine for DFS_Stack
+    void DFS_Stack_Visit(Vertex<T> *u, Stack<T> &s){
+  		Time++;
+	  	u->Discovered = this->Time;
+  		u->c = GRAY;
+  		auto vNode = u->Adj.Head;
+
+  		while (vNode){
+
+  			auto v = vNode->Data;
+  			if (v->c == WHITE){
+  				v->Parent = u;
+  				DFS_Stack_Visit(v, s);
+  			}
+  			vNode = vNode->Next;
+  		}
+
+  		u->c = BLACK;
+  		Time++;
+  		u->Finished = Time;
+  		s.Push(u->Data);
+   }
+    
+   // Where s is a stack containing the vertex keys ordered by decreasing finished time
+   // (Returned from DFS_Stack) 
+   LinkedList<LinkedList<T>> SCC_DFS(Stack<T> &s){
+      LinkedList<LinkedList<T>> res;
+      Vertex<T> *b = V.Minimum(), *e = V.Maximum();
+  		while (b < e){
+  			b->c = WHITE;
+  			b->Parent = NIL;
+  			b = V.Successor(b);
+  		}
+  		e->c = WHITE;
+  		e->Parent = NIL;
+				
+  		Time = 0;
+  		b = V.Minimum();
+  		while (!s.Empty()){
+  			T data = s.Pop();
+  			Vertex<T> *u = vMap[data];
+  			LinkedList<T> ll;
+  			if (u->c == WHITE){
+  				Graph<T> g;
+  				SCC_DFS_Visit(u, s, ll);
+  				res.AddToHead(ll);
+  			}
+  		}
+  		return res;
+   }
+  // Recursive DFS subroutine for SCC_DFS
+	void SCC_DFS_Visit(Vertex<T> *u, Stack<T> & s, LinkedList<T> & ll){
+		Time++;
+		u->Discovered = this->Time;
+		u->c = GRAY;
+		auto vNode = u->Adj.Head;
+
+		while (vNode){
+			auto v = vNode->Data;
+			if (v->c == WHITE){
+				v->Parent = u;
+				SCC_DFS_Visit(v, s, ll);
+			}
+			vNode = vNode->Next;
+		}
+		u->c = BLACK;
+		Time++;
+		u->Finished = Time;
+		ll.AddToTail(u->Data);
+	}
+  // Creates a transposed graph, assuming that the invoking Graph contains directed edges 
+  Graph<T> Transpose(){
+   	Graph<T> gT;
+
+		auto b = V.Minimum(), e = V.Maximum();
+		while (b < e){
+			gT.AddVertex(b->Data);			
+			b = V.Successor(b);
+		}
+		gT.AddVertex(e->Data);
+		b = V.Minimum();
+		while (b < e){
+			auto vNode = b->Adj.Head;
+
+			while (vNode){
+				gT.AddEdge(vNode->Data->Data, b->Data);
+				vNode = vNode->Next;
+			}
+			b = V.Successor(b);
+		}
+		return gT;
+  }
+
+
 public:
- 
-   // TODO: Would be ideal to encapsulate this mapping 
+
+    // Creates a list of strongly connected components
+    // Outer list: List of each strongly connected component
+    // Inner list: List of vertex data contained within a specific strongly connected component
+    // Implementation notes: 
+    // -1 Creates last-in, first-out (relative to DFS finish time ) stack of vertex data with a modified 
+    //    version of Depth-First Search (which alters the invoking Graph)
+    // -2 Creates a temporary transposed graph
+    // -3 Performs a Depth-First Search on the transpose taking the stack from (1) as a parameter
+    //    to determine vertex visitation order. 
+    LinkedList<LinkedList<T>> StronglyConnectedComponentList(){
+      Stack<T> dfsFinishOrder = DFS_Stack();
+      auto gT = Transpose();
+      return gT.SCC_DFS(dfsFinishOrder); 
+    }
+
+    // Prints each strongly connected component
+    // Assumption: generic data type T has supports the '<<' operator on ostreams for console printing
+    void PrintStronglyConnectedComponents(){
+      LinkedList<LinkedList<T>> ll = StronglyConnectedComponentList();
+      PrintStronglyConnectedComponents_Inner(ll);
+    }
+
+    // Prints each strongly connected component
+    // Assumption: generic data type T has supports the '<<' operator on ostreams for console printing
+    void PrintStronglyConnectedComponents_Inner(LinkedList<LinkedList<T>> &ll){
+      auto n = ll.Head;
+   		int componentNumber = 0;
+
+	  	while (n){
+		  	auto inner = (n->Data).Head;
+			  if (inner)
+  				std::cout << "SCC #" << ++componentNumber << ": ";
+  			while (inner){
+  				std::cout << inner->Data << ", ";
+  				inner = inner->Next;
+  			}
+  			std::cout << std::endl;
+  			n = n->Next;
+  		}
+    }
+
 
    // Prints a vertex's color
    // USE: For debugging to ensure that an algorithm visits/alters every
@@ -281,22 +441,37 @@ public:
         ll->AddToHead(u->Data);
     }
 
+    void printVertices(){
+      auto b = V.Minimum(), e = V.Maximum();
+
+      while(b<e){
+        printVertexInfo(b->Data);
+        b = V.Successor(b);
+      }
+      printVertexInfo(e->Data);
+    }
+
     // TODO: Remove whenever, just for crude debugging
     // USE: To print the data for all the to vertices relating to the Vertex
     // associated with the data, if it exists.
     // (Assumption: generic type 'T' supports the << operator for ostream, for
     //              console output)
     void printVertexInfo(T d){
-
+        bool f = true;
         Vertex<T> *v = vMap[d];
         if(v){
-            std::cout << "********  ";
-            std::cout << v->Data << " -> Adjacent: " << v->Adj.Length << std::endl;
+            std::cout << "Vertex: ";
+            std::cout << v->Data;
             auto c = v->Adj.Head;
             while(c){
+                if(f){
+                  std::cout<< "Adj: ";
+                  f = false; 
+                }
                 std::cout << c->Data->Data << "->";
                 c = c->Next;
             }
+            f = true;
             std::cout << std::endl;
         }
         else{
@@ -321,7 +496,7 @@ public:
         auto toVertex = vMap[to];
         
         if(fromVertex && toVertex){
-            auto e = new Edge<T>(fromVertex, toVertex, 0);
+            auto e = new Edge<T>(fromVertex, toVertex, weight);
             E.Insert(e);
             fromVertex->Adj.AddToHead(toVertex);
             return true;
