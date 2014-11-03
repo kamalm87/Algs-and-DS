@@ -302,10 +302,10 @@ void Figure_22_9(){
 	// cross-edge: abe -> cd
 	g.AddEdge('b', 'c');
 
-	// cross-edge: cdh -> fg
+	// cross-edge: cd -> fg
 	g.AddEdge('c', 'g');
 
-	// cross-edge: fg -> cdh
+	// cross-edge: fg -> h 
 	g.AddEdge('g', 'h');
   
   std::cout << std::endl << "Graph info" << std::endl << std::endl;
