@@ -16,9 +16,10 @@ template <typename T>
 				return true;
 			return false;
 		}
+		
+		// CHECK: This should naively fix the empty stack case. NEED TO TEST (11/2/2014)
 		void Push(T x){
-			A.Insert(x);
-			top++;
+			A[top++] = x;
 		}
 
 		T Pop(){
