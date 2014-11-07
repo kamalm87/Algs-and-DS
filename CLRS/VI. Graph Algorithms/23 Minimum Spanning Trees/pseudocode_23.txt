@@ -1,0 +1,75 @@
+23 Minimum Spanning Trees
+- 23.1 Growing a minimum spanning tree
+- 23.2 The algorithms of Kruskal and Prim
+
+Problems
+- 23-1 Second-best minimum spanning tree
+- 23-2 Minimum spanning tree in sparse graphs
+- 23-3 Bottleneck spanning tree
+- 23-4 Alternative minimum-spanning-tree algorithms
+
+Pseudocode
+
+(23.1)
+GENERIC-MST(G,w)
+1. A = empty-set 
+2. while A does not form a spanning tree
+3.    find an edge (u,v) that is safe for A
+4.    A = A union {(u,v)}
+5. return A
+
+(23.2)
+O( E log(V) )
+MST-KRUSKAL(G,w)
+1. A = empty-set
+2. for each vertex v in G.V
+3.    MAKE-SET(v)
+4. sort the edges of G.E into nondecreasing order by weight w   
+5. for each edge (u,v) in G.E, taken in nondecreasing order by weight
+6.    if FIND-SET(u) != FIND-SET(v)
+7.        A = A union {(u,v)}
+8.        UNION(u,v)
+9. return A
+
+(23.2)
+O( E log(V) ) ; using Fibonacci heap: O( E + V * log(V) )
+( where Q := min-priority-queue )
+MST-PRIME(G,w,r)
+1.  for each u in G.V
+2.      u.key = infinity
+3.      u.parent = NIL
+4.  r.key = 0      
+5.  Q = G.V
+6.  while Q != empty-set
+7.      u = EXTRACT-MIN(Q)
+8.      for each v in G.Adj[u]
+9.          if v in Q and w(u,v) < v.key
+10.             v.parent = u
+11.             v.key = w(u,v)
+
+(Problem 23-2)
+MST-REDUCE(G,T)
+1.  for each v in G.V
+2.      v.mark = FALSE
+3.      MAKE-SET(v)
+4.  for each u in G.V
+5.      if u.mark == FALSE
+6.          choose v in G.Adj[u] such that (u,v).c is minimized
+7.          UNION(u,v)
+8.          T = T union {(u,v).orig}
+9.          u.mark = v.mark = TRUE
+10. G'.V = {FIND-SET(v) : v in G.V}    
+11. G'.E = empty-set
+12. for each (x,y) in G.E
+13.     u = FIND-SET(x)   
+14.     v = FIND-SET(y)
+15.     if (u,v) not in G'.E
+16.         G'.E = G'.E union {(u,v)}
+17.         (u,v).orig' = (x,y).orig
+18.         (u,v).c' = (x,y).c'
+19.     else if (x,y).c < (u,v).c'
+20.         (u,v).orig' = (x,y).orig
+21.         (u,v).c' = (x,y).c
+22. construct adjacency lists G'.Adj for G'    
+23. return G' and T
+
