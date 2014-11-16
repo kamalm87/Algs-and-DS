@@ -1,0 +1,106 @@
+25 All-Pairs Shortest Paths
+- 25.1 Shortest paths and matrix multiplication
+- 25.2 The Floyd-Warshall algorithm
+- 25.3 Johnson's algorithm for sparse graphs
+
+Problems
+- 25-1 Transitive closure of a dynamic graph
+- 25-2 Shortest paths in epilson-dense graphs
+
+Pseudocode
+
+PRINT-ALL-PAIRS-SHORTEST-PATH( Sigma, i, j)
+1. if i == j
+2.    print i
+3. elseif Sigma(i,j) == NIL  
+4.    print "no path from i to j exists"
+5. else PRINT-ALL-PAIRS-SHORTEST-PATH(Sigma, i, Sigma(i,j))
+6.    print j
+
+(25.1)
+Theta ( N^3 )
+EXTEND-SHORTEST-PATHS(L,W)
+1. n = L.rows
+2. let L' = (l'(i,j)) be a new n * n matrix
+3. for i = 1 to n
+4.    for j = 1 to n
+5.        l'(i,j) = infinity
+6.        for k = 1 to n
+7.            l'(i,j) = min(l'(i,j), l(i,k) + w(k,j))
+8. return L'
+
+(25.1)
+SQUARE-MATRIX-MULTIPLY(A,B)
+1. n = A.rows
+2. let C be a nwe n * n matrix
+3. for i = 1 to n 
+4.    for j = 1 to n
+5.      c(i,j) = 0
+6.      for k = 1 to n
+7.          c(i,j) = c(i,j) + a(i,k) * b(k,j)
+8. return C
+
+(25.1)
+Theta( N^4 )
+SLOW-ALL-PAIRS-SHORTEST-PATHS(W)
+1. n = W.rows
+2. L^(1) = W
+3. for m = 2 to n - 1
+4.    let L^(m) be a new n * n matrix
+5.    L^(m) = EXTEND-SHORTEST-PATHS (L^(m-1), W)
+6. return L^(n-1)
+
+(25.1)
+FASTER-ALL-PAIRS-SHORTEST-PATHS(W)
+1. n = W.rows
+2. L^(1) = W
+3. m = 1
+4. while m < n - 1
+5.    let L^(2m) be a new n * n matrix
+6.    L^(2m) = EXTEND-SHORTEST-PATHS(L^(m), L^(m))
+7.    m = 2m
+8. return L^(m)
+
+(25.2)
+FLOYD-WARSHALL(W)
+1. n = W.rows
+2. D^(0) = W
+3. for k = 1 to n
+4.    let D^(k) = (d^(k) (i,j) ) be a new n * n matrix
+5.     for i = 1 to n
+6.        for j = 1 to n  
+7.            d^(k)(i,j) = min (d^(k-1)(i,j), d^(k-1)(i,k) + d^(k-1) (k, j))
+8. return D^(n)
+
+(25.2)
+TRANSITIVE-CLOSURE(G)
+1.  n = |G.V|
+2.  let T^(0) = (t^(0)(i,j)) bea  new n * n matrix
+3.  for i = 1 to n
+4.      for j = 1 to n
+5.          if i == j or (i,j) in G.E
+6.              t^(0)(i,j) = 1
+7.          else t^(0)(i,j) = 0
+8.  for k = 1 to n
+9.      let T^(k) = (t^(k)(i,j)) be a new n * n matrix
+10.     for i = 1 to n
+11.         for j = 1 to n
+12.             t^(k)(i,j) = t^(k-1)(i,j) xor (t^(k-1)(i,k) or t^(k-1)(k,j))
+13. return T^(n)
+
+
+(25.3)
+1.  compute G', where G'.V = G.V union {s}, G'.E = G.E union {(s,v) : v in G.V}, and w(s,v) = 0 for all v in G.V
+2.  if BELLMAN-FORD(G', w,s) == FALSE
+3.      print "the input graph contains a negative-weight cycle"
+4.  else for each vertex v in G'.V
+5.            set h(v) to the value of delta(s,v) computed by the Bellman-Ford algorithm
+6.        for each edge (u,v) in G'.E
+7.            w-hat(u,v) = w(u,v) + h(u) - h(v)
+8.        let D = D(u,v) be a new n * n matrix
+9.        for each vertex u in G.V
+10.           run DIJKSTRA G(w-hat, u) to compute delta-hat(u,v) for all v in G.V
+11.           for each vertex in G.V
+12.               d(u,v) = delta-hat(u,v) + h(v) - h(h)
+13.       return D
+
