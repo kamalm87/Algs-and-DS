@@ -4,9 +4,9 @@ General intentions:
 * To avoid using the std namespace/data structures from the STL. 
   - Exceptions: 
       * (<iostream> <string> ) std::cout, std::string for printing cases.
-      * (<cmath>) std::log2() for comparisons to theoretically bounds
+      * (<cmath>) std::log2() for comparisons to theoretical bounds
       * (<random>) std::rand() for generation of pseudo-random data sets
-
+      * (<limits>) std::numeric_limits<> for default-initialized/unexplored/untraveresed max values
 
 * Progress ('-' represent Chapters with content):
 0. [Augmented Types]
@@ -28,5 +28,9 @@ III. Data Structures
 - 14 Augmenting Data Structures
 IV. Advanced Design and Analysis Techniques
 - 15 Dynamic Programming (Only 15.1)
+- 21 Data Structures for Disjoint Sets
 V. Advanced Data Structures
 - 21 Data Structures for Disjoint Sets
+VI. Graph Algorithms
+- 22 Elementary Graph Algorithms
+- 23 Minimum Spanning Trees

@@ -9,7 +9,7 @@
 #include <limits>
 
 // Forward declaration to give Graph access to certain Vertex private elements
-template <typename T>
+template <typename T, typename W = int>
 class Graph;
 
 // Enums used for internally invoked Depth-First Searches
@@ -20,7 +20,7 @@ struct Vertex{
   
   // Provides Graph access to Vertex attributes related to Depth-First Search, which are
   // not explicitly used in any algorithms for Section 24. 
-  friend class Graph<T>;
+  friend class Graph<T,int>;
 
   // All explicit construction should use the parametized constructor. 
   // The default-constructor is intended to function as a boundary points for containers 
@@ -127,7 +127,7 @@ private:
 // - BellmanFord
 // - Directed-Acyclic-Graph Shortest Paths
 // - Dijkstra's Algorithm
-template <typename T>
+template <typename T, typename W = int>
 class Graph{
 public:
   
@@ -220,7 +220,7 @@ private:
 
 // Creates a Vertex and adds it to the set of vertices, if the vertex does not exist
 // Returns whether the vertex was created 
-template <typename T>
+template <typename T, typename W = int>
 bool Graph<T>::AddVertex( T u ) {
   if(vMap.ContainsKey(u)){
     return false;
@@ -237,7 +237,7 @@ bool Graph<T>::AddVertex( T u ) {
 // both keys
 // U := starting vertex, V:= destination vertex
 // Returns whether an edge was created
-template <typename T>
+template <typename T, typename W = int>
 bool Graph<T>::AddEdge( T u, T v, int weight) {
   
   if(vMap.ContainsKey(u) && vMap.ContainsKey(v)){
@@ -260,13 +260,13 @@ bool Graph<T>::AddEdge( T u, T v, int weight) {
 // Initializes the distance for a given starting vertex
 // Note: Untraversed vertices by default are assigned the max values
 //       in the parametized vertex constructor
-template <typename T>
+template <typename T, typename W>
 void Graph<T>::InitializeSingleSource( Vertex<T> *s){
   s->Distance = 0;
 }
 
 // Checks and updates the distance of a vertex, if applicable
-template <typename T>
+template <typename T, typename W>
 void Graph<T>::Relax( Edge<T> *e ){
   
   Vertex<T> *u = e->U, *v = e->V;
@@ -277,7 +277,7 @@ void Graph<T>::Relax( Edge<T> *e ){
 }
 
 // Implementation of the Bellman-Ford algorithm
-template <typename T>
+template <typename T, typename W>
 bool Graph<T>::BellmanFord( T s){ 
   Vertex<T> *vS = vMap[s];
   InitializeSingleSource(vS);

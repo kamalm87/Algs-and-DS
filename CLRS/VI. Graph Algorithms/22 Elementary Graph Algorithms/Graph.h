@@ -3,6 +3,8 @@
 #include "Auxiliary/Stack.h"
 #include "Auxiliary/Queue.h"
 
+#include <limits>
+
 // Implementation of a Graph data structure supporting generic parameters
 // Supports: 
 //          * Types of graphs:
@@ -108,8 +110,8 @@ private:
     
    // Where s is a stack containing the vertex keys ordered by decreasing finished time
    // (Returned from DFS_Stack) 
-   LinkedList<LinkedList<T>> SCC_DFS(Stack<T> &s){
-      LinkedList<LinkedList<T>> res;
+   LinkedList< LinkedList<T> > SCC_DFS(Stack<T> &s){
+      LinkedList< LinkedList<T> > res;
       Vertex<T> *b = V.Minimum(), *e = V.Maximum();
   		while (b < e){
   			b->c = WHITE;
@@ -284,19 +286,23 @@ public:
 
     // Implementation of the BFS algorithm
     void BreadthFirstSearch(Vertex<T> * S){
-        auto b = V.Minimum();
-        auto e = V.Maximum();
+        
+        // Use as placeholder to represent an infinite value for untraversed vertices
+        int INFINITY = std::numeric_limits<int>::max();
 
-        e->c = WHITE;
-        e->Parent = NIL;
-        // TODO: numerics<max>
-        e->Distance = 10000000;
+        auto b = V.Minimum(), e = V.Maximum();
+
         while(b < e){
             b->c = WHITE;
-            // TODO: numerics<max>
-            b->Distance = 10000000;
+            b->Distance = INFINITY; 
             b->Parent = NIL;
             b = V.Successor(b);
+
+            if(b == e){
+              e->c = WHITE;
+              e->Parent = NIL;
+              e->Distance = INFINITY; 
+            }
        }
     
        S->c = GRAY;
@@ -512,7 +518,7 @@ public:
         auto vertexTwo = vMap[v2];
         
         if(vertexOne && vertexTwo){
-            auto e = new Edge<T>(vertexOne, vertexTwo, 0);
+            auto e = new Edge<T>(vertexOne, vertexTwo, weight);
             E.Insert(e);
             vertexOne->Adj.AddToHead(vertexTwo);
             vertexTwo->Adj.AddToHead(vertexOne);

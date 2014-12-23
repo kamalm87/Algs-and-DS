@@ -167,6 +167,7 @@ namespace KNM_DS{
 				return T();
 		}
 
+
 	private:
 
 		// Acceses the parent of an index

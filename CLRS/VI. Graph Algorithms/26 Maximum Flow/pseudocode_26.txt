@@ -1,0 +1,133 @@
+26 Maximum Flow
+- 26.1 Flow networks
+- 26.2 The Ford-Fulkerson method
+- 26.3 Maximum bipartite matching
+- 26.4 (*) Push-relabel algorithms
+- 26.5 (*) The relbael-to-front algorithm
+
+Problems
+- 26-1 Escape problem
+- 26-2 Minimum path cover
+- 26-3 Algorithmic consulting
+- 26-4 Updating maximum flow
+- 26-5 Maximum flow by scaling
+- 26-6 The Hopcroft-Karp bipartite matching algorithm
+
+Pseudocode
+
+
+c_f(u,v):
+  if (u,v) in E:
+    return c(u,v) - f(u,v)
+  else if ( v, u ) in E
+    return f(v,u)
+  else
+    return 0
+
+(26.2)
+FORD-FULKERSON-METHOD(G,s,t)
+1. initialize flow f to 0
+2. while there exists an augmenting path p in the residual network G(f)
+3.     augment flow f along p
+4. return f
+
+(26.2)
+O ( E | f^* | )
+FORD-FULKERSON(G,s,t)
+1. for each edge (u,v) in G.E
+2.    (u,v).f = 0
+3. while there exists a path p from s to t in the residual network G(f)
+4.    c(f)(p) = min {c(f)(u,v) : (u,v) is in p }
+5.    for each edge (u,v) in p
+6.      if(u,v) in E
+7.          (u,v).f = (u,v).f + c(f)(p)
+8.      else (v,u).f = (v,u).f - c(f)(p)
+
+(26.2)
+ O( V * E^2 )
+ENDMONDS-KARP(G, s, t)
+1. for each edge (u,v) in G.E
+2.    (u.v).f = 0
+3. while there exists a path p from s to t in the residual network G(f), 
+   select the shortest path by performing a BFS with unit distance weights
+4.    c_f(p) = min { c_f(u.v): (u.v) is in p }
+5.    for each edge (u,v) in p
+6.      if ( u.v) in E
+7.        (u,v).f = (u,v).f _ c_f(p)
+8.      else (v,u).f = (v,u).f - c_f(p)
+
+
+(26.4)
+PUSH(u,v)
+1. // Applies when: u is overflowing, c(f)(u,v) > 0, and u.h = v.h + 1
+2. // Action: Push Delta(f)(u.v) = min(u.e, c(f)(u,v)) units of flow from u to v
+3. Delta(f)(u,v) = min(u.e, c(f)(u,v))
+4. if (u,v) in E
+5.    (u.v).f = (u,v).f + Delta(f)(u,v)
+6. else (v,u).f = (v,u).f - Delta(f)(u,v)    
+7. u.e = u.e - Delta(f)(u,v)
+8. v.e = v.e + Delta(f)(u.v)
+
+(26.4)
+INITIALIZE-PREFLOW(G,s)
+1.  for each vertex v in G.V
+2.      v.h = 0
+3.      v.e = 0
+4. for each edge (u,v) in G.E
+5.    (u.v).f = 0
+6.  s.h = |G.V|
+7.  for each vertex v in s.Adj
+8.    (s.v).f = c(s,v)
+9.    v.e = c(s,v)
+10.   s.e = s.e - c(s,v)
+
+(26.4)
+GENERIC-PUSH-RELABEL(G)
+1. INITIALIZE-PREFLOW(G,s)
+2. while there exists an applicable push or relabel operation
+3.    select an applicable push or relabel operation and perform it
+
+(26.5)
+DISCHARGE(u)
+1. while u.e > 0
+2.    v = u.current
+3.    if v == NIL
+4.        RELABEL(u)
+5.        u.current = u.N.head
+6.    elseif c(f)(u,v) > 0 and u.h == v.h + 1
+7.        PUSH(u,v)
+8.    else u.current = v.next-neighbor
+
+(26.5)
+RELABEL-TO-FRONT(G,s,t)
+1.  INITIALIZE-PREFLOW(G,s)
+2.  L = G.V - {s,t}, in any order
+3.  for each vertex u in G.V - {s,t}
+4.      u.current = u.N.head
+5.  u = L.head
+6.  while u != NIL  
+7.    old-height = u.h
+8.    DISCHARGE(u)
+9.    if u.h > old-height
+10.       move u to the front of list L
+11.   u = u.next
+
+(Problem 26-5)
+MAX-FLOW-BY-SCALING(G,s,t)
+1. C = max(u,v) in E^(c(u,v))
+2. initialize flow f to 0
+3. K = 2 ^(floor(log(C)))
+4. while K >= 1
+5.    while there exists an augmenting path p of capacity at least K
+6.         augment flow f along p
+7.    K = K / 2
+8. return f
+
+(Problem 26-6)
+HOPCROFT-KARP(G)
+1. M = empty-set
+2. repeat 
+3.    let P = {P1, P2, ..., Pk} be a maximal set of vertex-disjoint shortest augmenting paths with respect to M
+4.    M = M add-sum (P1 union P2 union ... union Pk)
+5. until P == empty-set
+6. return M

@@ -4,7 +4,6 @@
 #include "Auxiliary/LinkedList.h"
 #include "Auxiliary/Map.h"
 #include "Auxiliary/Queue.h"
-#include "Auxiliary/RBT.h"
 #include "Auxiliary/Set.h"
 
 // For std::numerics<int>::max() to get an extensible dummy value for a min-priority queue
@@ -14,11 +13,25 @@
 // Prim algorithm vertex-specific implementation notes:
 // - for dummy key values, std::numeric<int>::max() is used for boundary dummy nodes
 //   , while uninitialized nodes with values will be set to 'std::numeric<int>::max() - 1'
-// - DeQueued is set to false by default, and will be altered to true in Prim's algorithm for O(1) 
-//   Queue search time
+//    (MEANING: DEFAULT CONSTRUCTOR SHOULD ONLY BE USED FOR DUMMY VALUES)
+// - DeQueued is set to false by default, and will be only altered to true in Prim's algorithm for O(1) 
+//   Queue search time of elements that were/were not extracted from the priority queue
 // - IMPORTANT: To ensure that default initialized vertices operate as NIL values, 
 //              std::numeric<int>::max() will be used for the default constructor,
-//              while std::numeric<int>::max() - 1 will be used within Prim's algorithm.
+//              while std::numeric<int>::max() - 1 will be used within Prim's algorithm for vertices
+//              created with the parametized constructor.
+// - Operator Overloading:
+//    * Equality: Vertices are assumed to have distinct Data values, making the equality operator function
+//                as an identity operation.
+//     ( TODO: Possible bug area below. )
+//    * Comparison: Vertices are assumed to be ordered by their Key value, which represents the lowest
+//                  cost path to another adjacent vertex in the graph. 
+//                  ( Notably used for the priority queue in Prim's Algorithm. )
+//                  ( May produce undesirable behavior in the set of vertices  within the graph. 
+//                   However, specific vertices are accessed using a mapping, so an arbitrarily
+//                   ordered set isn't expected to produce asymptotically unfavorable access time 
+//                   because the mapping should be ordered by the underlying Data key instead of 
+//                   overloaded comparison operator below. )
 template <typename T>
 struct Vertex{
 	T Data;
@@ -29,8 +42,9 @@ struct Vertex{
 	bool DeQueued;
 	Vertex<T> *Parent;
 
-	Vertex() : Key(std::numeric_limits<int>::max()), Parent(nullptr), Data(T()), DeQueued(false){}
-	Vertex(T d) : Data(d), Key(std::numeric_limits<int>::max() - 1), Parent(nullptr), DeQueued(false) {}
+	Vertex() : Key( std::numeric_limits<int>::max() ), Parent( nullptr ), Data( T() ), DeQueued( false ){}
+
+	Vertex(T d) : Data(d), Key( std::numeric_limits<int>::max() - 1 ), Parent( nullptr ), DeQueued( false ) {}
 
 	friend bool operator<(Vertex<T> &l, Vertex<T> &r){
 		return l.Key < r.Key;
@@ -53,7 +67,7 @@ struct Vertex{
 // for the < VerticePair<T>,  Edge<T>* > mapping, which is used in the implementation of 
 // Prim's Algorithm.
 // - Logic: has an 'absolute' key value regardless of values of u, v
-//   e.g: (1,2) == (2,1) for key accessor logic 
+//   e.g: (1,2) == (2,1) for key accessor logic, regardless of whether the actual pair is (u,v) or (v, u)
 template <typename T>
 struct VerticePair{
 	VerticePair() : X(nullptr), Y(nullptr), U(nullptr), V(nullptr){}
@@ -206,6 +220,8 @@ public:
 			v2 = t;
 		}
 
+    // TODO: May need to use ContainsKey as this may possibly create undesired
+    //       elements in vMap
 		auto vertexOne = vMap[v1];
 		auto vertexTwo = vMap[v2];
 
@@ -225,7 +241,7 @@ public:
 		}
 	}
 
-  // Creates or overwriters a Vertice and a mapping.
+  // Creates or overwrites a Vertice and a mapping.
   // Possible TODO: Prevent overwriting?
 	bool AddVertex(T d){
 		Vertex<T> *t = new Vertex<T>(d);

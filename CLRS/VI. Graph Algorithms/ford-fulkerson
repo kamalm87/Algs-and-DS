@@ -1,0 +1,74 @@
+
+(26.2) 
+  c_f(u,v):
+            if (u,v) in E: c(u,v) - f(u,v)
+            if (v,u) in E: f(v,u)
+
+(26.3) ( residual network of G )
+  E_f = { (u,v) in V x V : c_f(u,v) > 0 }
+
+(26.4) ( augmentation of flow by f', where f' is the flow in a corresponding residual network )
+  ( f ^ f' ) ( u,v ):
+            if (u,v) in E:  f(u,v) + f'(u,v) - f'(v,u)
+            else:           0  
+Lemma 26.1:
+            | f ^ f' | = |f| + |f'|
+
+Lemma 26.2: 
+            * letting f be a flow in G and letting p be an augmenting path in G_f
+            * with the following function f_p: V x V -> R
+
+            f_p(u,v):
+                     if (u,v) is on p:  c_f(p) 
+                     else:              0 
+            
+            => f_p is a flow in G_f with value |f_p| = c_f(p) > 0           
+
+
+Corollary 26.3:
+
+              | f ^ f_p | = | f | + | f_p | > | f | 
+
+
+Lemma 26.4:
+
+            (S,T) = f(S,T) = | f |
+
+
+Corollary 26.5
+
+  The value of any flow f in a flow network G is bounded from above by the capacity of any cut in G. 
+
+
+Theorem 26.6 ( Max-flow min-cut theorem )
+  ( following conditions are equivalent )
+  1. f is the maximum flow in G
+  2. G_f contains no augmenting paths
+  3. | f | = c(S,T) for some cut (S,T) of G
+
+Lemma 26.7
+
+  G = (V,E)
+  for all v in V - {s,t}
+    shortest-path distance d_f(s,v) in G_f increases monotonically with each flow augmentation
+
+Theorem 26.8
+
+  Edmonds-Karp on G = (V,E) with { s, t }
+  flow augmentations := O(VE)
+
+(26.5)
+      SUM( v in V1 ) { ( f ^ f' )(s,v) } - SUM( v in V2 ){  ( f ^ f' )(v,s) }
+
+(26.9) ( cuts of flow networks: net flow )
+  
+  f(S,T) = SUM ( u in S ) SUM ( v in T ) { f(u,v) } - SUM(u in S) SUM (v in T) { f(v,u) } 
+
+(26.10) ( cuts of flow networks: net capacity )
+  
+  c(S,T) =  SUM ( u in S ) SUM ( v in T ) { c(u,v) } 
+
+
+
+(u,v) not in E => c(u,v) = 0
+
