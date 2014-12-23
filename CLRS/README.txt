@@ -34,3 +34,4 @@ V. Advanced Data Structures
 VI. Graph Algorithms
 - 22 Elementary Graph Algorithms
 - 23 Minimum Spanning Trees
+- 24 Single-Source Shortest Paths
