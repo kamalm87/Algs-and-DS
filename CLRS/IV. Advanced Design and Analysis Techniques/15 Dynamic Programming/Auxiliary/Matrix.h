@@ -38,7 +38,10 @@ class Matrix{
     for(int i = 0; i < rows; i++){
       std::cout << "\t R" << rowN << ": ";
       for(int j = 0; j < cols; j++){
-        std::cout << M[i][j] << ( j != cols - 1 ? "," : "\n");
+	if( M[i][j] == this->infinity)
+		std::cout << "*" << ( j != cols - 1 ? "," : "\n");
+	else
+	        std::cout << M[i][j] << ( j != cols - 1 ? "," : "\n");
       }
       rowN++;
     }   
